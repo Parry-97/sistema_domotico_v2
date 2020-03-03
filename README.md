@@ -1,2 +1,2 @@
-# sistema_domotico_ingeSW
-Sistema software per gestione domotica
+# sistema_domotico_ingeSW V2
+Sistema software per gestione domotica VERSIONE 2
