@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * commerciale, produttiva ecc. Un'unit&agrave; immbobiliare &egrave; articolata in un insieme di stanze e/o in un insieme di artefatti.
  * Globalmente l'unit&agrave; deve consistere in un almeno una {@link Stanza} o in almeno un {@link Artefatto}.
  *
- * @author Parampal, Mattia Nodari
+ * @author Parampal Singh, Mattia Nodari
  */
 public class UnitaImmobiliare {
     /**
