@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Ogni {@link UnitaImmobiliare} &egrave; costituita da almeno una {@link Stanza} o da almeno un {@link Artefatto}.
@@ -104,16 +105,17 @@ public class Stanza {
      * @return stringa descrittiva della stanza
      */
     public String visualizzaDisposizione() {
-        String visualizza = "Nome Stanza: " + this.getNome() + ", essa possiede:\n";
+        StringBuilder visualizza = new StringBuilder("Nome Stanza: " + this.getNome() + ", essa possiede:\n");
 
         for (Artefatto a: listaArtefatti) {
-            visualizza +=  a.visualizzaDispositivi();
+            visualizza.append(a.visualizzaDispositivi());
         }
 
+        //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno con quel getValore()
         for (Sensore s : listaSensori) {
-            visualizza += "Nome Sensore: "+ s.getNome() + " | " + "Categoria: " + s.getCategoria().getNome() + " | " + "Rilevazione: " + s.getRilevazione().getValore()+"\n";
+            visualizza.append("Nome Sensore: ").append(s.getNome()).append(" | ").append("Categoria: ").append(s.getCategoria().getNome()).append(" | ").append("Rilevazione: ").append(s.getRilevazioni()).append("\n");
         }
-        return visualizza;
+        return visualizza.toString();
 
     }
 }
