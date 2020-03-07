@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Rappresenta un attuatore ovvero un dispositivo ,tramite il quale, il sistema domotivo compiere determinate azioni
@@ -125,6 +126,7 @@ public class Attuatore {
             if(mod.getNome().equals(nuovaModalita)) {
                 this.modalitaAttuale = nuovaModalita;
 
+                //TODO: Necessario magari definire nuova modalità operativa con stesso nome ma magari param diversi
                 modificaArtefatti(mod); //conseguente cambiamento di stato degli artefatti comandati
 
                 System.out.println("Nuova modalità");
@@ -134,10 +136,38 @@ public class Attuatore {
         System.out.println("Questa modalità non esiste per questo attuatore");
     }
 
+    public void setModalitaAttuale(String nuovaModalita, String nomeParametro, int valoreParametro) {
+        if(this.modalitaAttuale.equals(nuovaModalita)) {
+            System.out.println("Sei già in questa modalità");
+        }
+        for (ModalitaOperativa mod : this.getCategoria().getModalita()) {
+            if(mod.getNome().equals(nuovaModalita)) {
+                this.modalitaAttuale = nuovaModalita;
+
+                HashMap<String, Integer> nuoviParam = mod.getParametri();
+                ModalitaOperativa nuovaMod = new ModalitaOperativa(nuovaModalita, nuoviParam);
+                nuovaMod.setParametro(nuovaModalita, valoreParametro);
+                //TODO: Necessario magari definire nuova modalità operativa con stesso nome ma magari param diversi
+                modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
+
+                System.out.println("Nuova modalità");
+                return;
+            }
+        }
+        System.out.println("Questa modalità non esiste per questo attuatore");
+    }
+
+
+    //In caso durante settaggio si voglia anche settare parametro della modalita operativa
+    public void setModalitaAttuale(String nuovaModalita, int nomeParam, int valoreParam) {
+
+    }
+
 
     /** Modifica la modalit&agrave; operatica/stato degli artefatti comandati dall'attuatore
      * @param mod nuova modalit&agrave; operativa da assegnare agli artefatti comandati dall'attuatore
      */
+
     private void modificaArtefatti(ModalitaOperativa mod) {
         if (listaComandati.isEmpty()) {
             System.out.println("** L'attuatore non comanda alcun artefatto **");

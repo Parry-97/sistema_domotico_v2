@@ -3,7 +3,7 @@ package inge.progetto;
 import it.unibs.fp.mylib.*;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Principale punto d'avvio e funzionamento del sistema domotico. Svolge un ruolo di interfacciamento tra l'utente e la logica interna
@@ -22,8 +22,68 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
+        //TODO: Testare tutte le nuove funzio con un dummy Main
+        /*ArrayList<Informazione> testInfos1 = new ArrayList<>();
+        ArrayList<Informazione> testInfos2 = new ArrayList<>();
 
-        UnitaImmobiliare unitaImmobiliare = new UnitaImmobiliare();
+        ArrayList<String> domNonNum = new ArrayList<>();
+        domNonNum.add("Presente");
+        domNonNum.add("Non-Presente");
+
+        testInfos1.add(new Informazione("STATO"));//funge da placeholder per stato artefatto
+        testInfos1.add(new Informazione("temp_interna_lamp", 50, -50));
+
+        testInfos2.add(new InformazioneNonNum("Presenza Persone", domNonNum));
+
+        HashMap<String, Integer> parametri = new HashMap<>();
+        parametri.put("energia_media_dissipata", 100);
+
+        CategoriaAttuatore catInt = new CategoriaAttuatore("interruttore", "dadad");
+        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Acceso")); //Codice di v1
+        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Spento"));
+        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Risparmio", parametri));
+
+        CategoriaSensore cats1 = new CategoriaSensore("sensLamp","sdasdada",false);
+        cats1.setInfoRilevabili(testInfos1);
+
+        CategoriaSensore cats2 = new CategoriaSensore("VideoSorv", "sdadadsd", true);
+        cats2.setInfoRilevabili(testInfos2);
+
+        Sensore s1 = new Sensore("s1",cats1);
+        Sensore sVid = new Sensore("vid", cats2);
+
+        Artefatto lampada1 = new Artefatto("lampada1", new ModalitaOperativa("Spento"));
+        Artefatto lampada2 = new Artefatto("lampada2", new ModalitaOperativa("Spento"));
+
+        Attuatore int1 = new Attuatore("int1", catInt,"Spento",false);
+        Attuatore int2 = new Attuatore("int2", catInt, "Spento",false);
+
+        lampada1.aggiungiSensore(s1);
+        lampada1.aggiungiAttuatore(int1);
+
+        lampada2.aggiungiAttuatore(int2);
+
+        System.out.println(" *** Misure di sVid e s1 : ");
+        for (int i = 0; i < 12; i++) {
+
+            if(i == 4)
+                int1.setModalitaAttuale("Acceso","energia_media_dissipata", 10);//TODO: Verificare nel Main che la modalita operativa sia parametrica o meno
+
+            if (i == 8)
+                int1.setModalitaAttuale("Risparmio", "energia_media_dissipata",80);
+
+            System.out.println( i +") " + "sVid: " + sVid.getRilevazioni());
+            System.out.println("    S1: " + s1.getRilevazioni()) ;
+        }
+
+        System.out.println("\nT2) Misure di sensLamp");
+        System.out.println(lampada1.visualizzaDispositivi());
+        System.out.println(lampada2.visualizzaDispositivi());
+
+         */
+
+
+        /*UnitaImmobiliare unitaImmobiliare = new UnitaImmobiliare();
         ArrayList<CategoriaAttuatore> listaCategoriaAttuatori = new ArrayList<>();
         ArrayList<CategoriaSensore> listaCategoriaSensori = new ArrayList<>();
         ArrayList<ModalitaOperativa> listaModalitaOperative = new ArrayList<>();
@@ -68,12 +128,9 @@ public class Main {
 
                             break;
                         case 3:
-                            /*if (unitaImmobiliare.getTipo().equals("")) {
-                                System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
-                                break;
-                            }
 
-                             */
+
+                            //TODO: Permettere al manutentore piu info rilevabili durante definizione di categoria di sensore
                             boolean categoriaPresenteSensore = false;
                             String nomeCategoriaSensore = InputDati.leggiStringa("\nInserisci nome della nuova categoria di sensori: ");
 
@@ -88,26 +145,38 @@ public class Main {
                             if (!categoriaPresenteSensore) {
                                 String testoLibero = InputDati.leggiStringa("Inserisci il testo descrittivo per la nuova categoria di sensore:\n");
                                 boolean fisico = InputDati.yesOrNo("E' una categoria di sensori fisico?");
+
+                                //TODO: Aggiungere la possibilita di definire numero, nome e dominio delle informazioni oltre a fisico
+                                //del tipo CategoriaSensore tempCategoria = new CategoriaSensore(nomeCategoriaSensore, testoLibero, fisico, infos);
+                                //dove info è un arraylist di dimensione definita da manutentore di info casuali di default ma con nome, dominio specificate dall'utente
+                                //Se poi info è non fisica ovvero da associare ad un artefatto si può fare che la info al primo indice è un info casuale di default di nome
+                                //STATO che verrà poi sovrascitta dall'artefatto(Una sorta di placeholder)
+                                //Test
+                                ArrayList<Informazione> testInfos = new ArrayList<>();
+
+                                InformazioneNonNum infoNan = new InformazioneNonNum("VideoDetect");
+                                infoNan.setDominioNonNumerico(new ArrayList<>(List.of("Morto", "Vivo")));
+                                testInfos.add(new Informazione("temp", 50,-50));
+                                testInfos.add(infoNan);
+
+                                //Aggiungere info rilevabili(anche multiple) al costruttore della categoria sensore
                                 CategoriaSensore tempCategoria = new CategoriaSensore(nomeCategoriaSensore, testoLibero, fisico);
+
+                                //TODO: Aggiungere info a una lista che va a sua volta aggiunta al costruttore
                                 listaCategoriaSensori.add(tempCategoria);
                                 System.out.println("Categoria creata correttamente");
                                 if (fisico) {
                                     String informazione = InputDati.leggiStringa("Inserisci il tipo dell'informazione che questo sensore acquisisce: ");
                                     int min = InputDati.leggiIntero("Inserisci il valore minimo di " + informazione + " che la categoria acquisisce: ");
                                     int max = InputDati.leggiIntero("Inserisci il valore massimo di " + informazione + " che la categoria acquisisce: ");
-                                    tempCategoria.setInfoRilevabile(new Informazione(informazione, max, min));
+                                    tempCategoria.setInfoRilevabile(new Informazione(informazione, max, min, false));
                                     System.out.println("Informazioni settate correttamente");
                                 }
                             }
 
                             break;
                         case 4:
-                            /*if (unitaImmobiliare.getTipo().equals("")) {
-                                System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
-                                break;
-                            }
 
-                             */
                             String nomeCategoriaAttuatore = InputDati.leggiStringa("\nInserisci nome della nuova categoria di attuatori: ");
                             boolean categoriaPresenteAttuatore = false;
                             for (CategoriaAttuatore a : listaCategoriaAttuatori) {
@@ -141,10 +210,12 @@ public class Main {
                                     System.out.println("Nome modalità: " + modalit.getNome());
                                 }
                             }
+
+                            //TODO: Aggiungere possibilta di definizione di parametri della modalita operativa
                             String nomeStato = InputDati.leggiStringa("Inserisci stato di default per il nuovo artefatto: ");
                             for (ModalitaOperativa modalita : listaModalitaOperative) {
                                 if (modalita.getNome().equals(nomeStato)) {
-                                    unitaImmobiliare.aggiungiArtefatto(new Artefatto(nomeArtefatto, new ModalitaOperativa(nomeStato, modalita.getValore())));
+                                    unitaImmobiliare.aggiungiArtefatto(new Artefatto(nomeArtefatto, new ModalitaOperativa(nomeStato)));
                                     break;
                                 } else
                                     System.out.println("Lo stato attuale non è stato definito. E' necessario definirlo prima di poterlo assegnare ad un artefatto");
@@ -152,12 +223,7 @@ public class Main {
 
                             break;
                         case 6:
-                            /*if (unitaImmobiliare.getTipo().equals("")) {
-                                System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
-                                break;
-                            }
 
-                             */
                             boolean presenteModalita = false;
                             String nuovaModalita = InputDati.leggiStringa("\nInserisci nuova modalità operativa: ");
                             for (ModalitaOperativa modalita : listaModalitaOperative) {
@@ -169,7 +235,9 @@ public class Main {
                             }
                             if (!presenteModalita) {
                                 int valore = InputDati.leggiIntero("Inserisci il valore di default della nuova modalità operativa: ");
-                                listaModalitaOperative.add(new ModalitaOperativa(nuovaModalita, valore));
+                                //listaModalitaOperative.add(new ModalitaOperativa(nuovaModalita, valore));
+                                //TODO: Fare if per definire parametri
+                                listaModalitaOperative.add(new ModalitaOperativa(nuovaModalita)); //TODO: Controllare con funzionalità primarie di v1
                                 System.out.println("Modalità operativa aggiunta correttamene");
                             }
 
@@ -513,7 +581,8 @@ public class Main {
                             for (Sensore sensore : listaSensori) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
-                                    System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazione().getValore());
+                                    //TODO: Tocca modificare perchè le info rilevabili sono moltepilici
+                                    //System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazioni().getValore());
                                     break;
                                 }
                             }
@@ -569,12 +638,7 @@ public class Main {
                             break;
 
                         case 15:
-                            /*if (unitaImmobiliare.getTipo().equals("")) {
-                                System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
-                                break;
-                            }
 
-                             */
 
                             int sceltaVisualizza;
                             do {
@@ -719,7 +783,8 @@ public class Main {
                             for (Sensore sensore : listaSensori) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
-                                    System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazione().getValore());
+                                    //TODO: Tocca modificare l'ottenimento dell'informazione perche possono essere molteplici (fai foreach semmai)
+                                    //System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazioni().getValore());
                                     break;
                                 }
                             }
@@ -865,5 +930,8 @@ public class Main {
         } while (!operatore.equals("FINE"));
         System.out.println("FINE");
 
+         */
+
     }
+
 }

@@ -1,8 +1,10 @@
 package inge.progetto;
 
+import java.util.ArrayList;
+
 /**
  * Permette di modellizare un sensore gestibile da un sistema domotico. Il sensore &egrave; identificato da un {@link #nome},
- * {@link #categoria} e dalla misura che questo rileva({@link #rilevazione}), la quale pu&ograve; essere lo 'stato' di un
+ * {@link #categoria} e dalla misura che questo rileva({@link #rilevazioni}), la quale pu&ograve; essere lo 'stato' di un
  * {@link Artefatto} da questi monitorato o la misura di una grandezza fisica associata ad una {@link Stanza} (es. temperatura o pressione).
  * Si definiscono quindi, attraverso la sua {@link #categoria}, sensori di tipo 'fisici' e 'sensori di stato' che monitorano
  * rispettivamente una stanza o un artefatto.
@@ -17,11 +19,10 @@ public class Sensore {
     private CategoriaSensore categoria;
 
     /** informazione o misura che il sensore rileva (guarda {@link Informazione})*/
-    private Informazione rilevazione;
+    private ArrayList<Informazione> rilevazioni; //TODO: Cosa fa un sensore con info multiple ma associato ad un artefatto
 
     /** stato del sensore ovvero se questi &egrave; abilitato o meno, attivo o spento*/
     private boolean statoAttivazione;
-
 
     /**
      * Costruttore della classe Sensore.
@@ -34,7 +35,7 @@ public class Sensore {
     public Sensore(String nome, CategoriaSensore categoria) {
         this.nome = nome + "_" + categoria.getNome();
         this.categoria = categoria;
-        this.rilevazione = categoria.getInfoRilevabile();
+        this.rilevazioni = categoria.getInfoRilevabili();
         this.statoAttivazione = true;
     }
 
@@ -59,8 +60,11 @@ public class Sensore {
         return categoria;
     }
 
-    public Informazione getRilevazione() {
-        return rilevazione;
+    /**Permette di ottenere l'informazione rilevata dal sensore
+     * @return informazione
+     */
+    public ArrayList<Informazione> getRilevazioni() {
+        return rilevazioni;
     }
 
     /** Permette di specificare esplicitamente l'informazione rilevabile dal sensore. Utilizzata principalmente per sensori
@@ -72,11 +76,30 @@ public class Sensore {
      * @param rilevazione nuova informazione che il sensore rileva
      * @see Informazione
      */
-    public void setRilevazione(Informazione rilevazione) {
-        if(this.categoria.isFisico())
+    public void setRilevazione(Informazione  rilevazione) { //TODO: magari conviene 'aggiungere invece di settare
+
+        //Mantenendo un'po la logica di prima: si ha che se il sensore è fisico allora a questi non si possono associare artefatti
+        //Quelli non fisici avranno come primo elemento Informazione di inforilevabili un informazione casuale inizialmente di nome STATO che cambiamo
+        //quando chiamiamo questo metodo.
+        if(this.categoria.isFisico()) {
             System.out.println("Non è possibile alterare le rilevazioni del sensore! \n");
-        else
-            this.rilevazione = rilevazione;
+        }
+        else {
+            //Altrimenti possiamo semplicemente fare che la info al primo indice è una modalita operativa
+            //Il resto fotte sega
+            for (int i = 0; i < this.rilevazioni.size(); i++) {
+                if (this.rilevazioni.get(i).getNome().equals("STATO")) {
+                    this.rilevazioni.set(i,rilevazione);
+                    break;
+                }
+            }
+        }
+    }
+
+
+    public void modificaRilevazione(Informazione info1, Informazione info2) {
+        if (rilevazioni.contains(info1))
+            rilevazioni.set(rilevazioni.indexOf(info1),info2);
     }
 
     /**Permette di conoscere lo stato di attivazione del sensore ovvero se &egrave; accesso o spento
@@ -92,4 +115,5 @@ public class Sensore {
     public void setStatoAttivazione(boolean statoAttivazione) {
         this.statoAttivazione = statoAttivazione;
     }
+
 }

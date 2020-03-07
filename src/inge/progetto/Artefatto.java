@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *Un artefatto &egrave; un oggetto(non naturale) il cui comportamento  pu&ograve; essere monitorato da un {@link Sensore}/i e comandato
@@ -53,10 +54,11 @@ public class Artefatto {
      * @param statoAttuale nuovo stato da assegnare all'artefatto
      */
     public void setStatoAttuale(ModalitaOperativa statoAttuale) {
-        this.statoAttuale = statoAttuale;
         for (Sensore s: listaSensori) {
-            s.setRilevazione(statoAttuale);
+            //s.setRilevazione(statoAttuale); TODO: Meglio magari un aggiungiMisura(aggiunge alla lista di info rilevabili)
+            s.modificaRilevazione(this.statoAttuale, statoAttuale);
         }
+        this.statoAttuale = statoAttuale;
     }
 
     /**Fornisce il nome dell'artefatto
@@ -120,7 +122,8 @@ public class Artefatto {
                 }
             }
         }
-        s.setRilevazione(this.statoAttuale);
+        //vale ovviamente solo per sensori non fisici e funziona solo una volta...non è possibile per ora cambiare artefatto monitorati da un sensore
+        s.setRilevazione(this.statoAttuale); //TODO: Definire meglio concetto di info rilevabili multiple(Posso associare un sensore a piu artefatti ?: NO)
         listaSensori.add(s);
         System.out.println("Sensore aggiunto");
     }
@@ -147,21 +150,33 @@ public class Artefatto {
      * @return descrizione di sensori/attuatori collegati all'artefatto
      */
     public String visualizzaDispositivi() {
-        String visualizza = "Nome Artefatto: " + this.getNome() + ", lista attuatori che lo comandano:\n";
+        StringBuilder visualizza = new StringBuilder("Nome Artefatto: " + this.getNome() + ", lista attuatori che lo comandano:\n");
 
         for (Attuatore a: listaAttuatori) {
-            visualizza +=  a.getNome() + ", categoria: " + a.getCategoria().getNome() + ", modalità attuale: " + a.getModalitaAttuale() + "\n";
+            visualizza.append(a.getNome()).append(", categoria: ").append(a.getCategoria().getNome()).append(", modalità attuale: ").append(a.getModalitaAttuale()).append("\n");
         }
 
-        visualizza += "E dispone dei seguenti sensori:\n";
+        visualizza.append("E dispone dei seguenti sensori:\n");
+
+        //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno
         for (Sensore s: listaSensori) {
-            visualizza +=  s.getNome() + ", categoria: " + s.getCategoria().getNome();
-            if (s.getCategoria().isFisico())
-                 visualizza += "Misura: " +  s.getRilevazione().getValore() + "\n";
+            visualizza.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
+            visualizza.append("E dispone delle seguenti informazioni rilevabili: \n");
+
+            ArrayList<Informazione> infoRileva = s.getRilevazioni();
+
+            for (int i = 1; i < infoRileva.size(); i++) {
+                visualizza.append(infoRileva.get(i));
+            }
+            /*if (s.getCategoria().isFisico())
+                 visualizza.append("Misura: ").append(s.getRilevazioni()).append("\n");
             else
-                visualizza += "Stato: " + s.getRilevazione().getNome() + "\n";
+                visualizza.append("Stato: ").append(s.getRilevazioni()).append("\n");
+
+             */
+
         }
 
-        return visualizza + "\n";
+        return visualizza.toString();
     }
 }

@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Rappresenta l'informazione/misura che il sistema domotico acquisisce attaverso ogni singolo sensori dislocati
@@ -10,7 +11,12 @@ import java.io.Serializable;
  * @author Parampal Singh, Mattia Nodari
  */
 public class Informazione implements Serializable {
+
     private String nome;
+    //private ArrayList<String> dominioNonNumerico;
+    //private boolean numerico; Forse non serve
+
+
     /**rappresentano il range/dominio entro cui cade il valore dell'informazione; hanno già dei
      * valori di default che possono poi essere modificati dal manutentore
      */
@@ -30,11 +36,27 @@ public class Informazione implements Serializable {
      * @param valoreMax valore massimo del range/dominio dell'informazione
      * @param valoreMin valore minimo del range/dominio dell'informazione
      */
+
     public Informazione(String nome, int valoreMax, int valoreMin) {
         this.nome = nome;
+        //this.dominioNonNumerico = new ArrayList<>();
         this.VALORE_MAX = valoreMax;
         this.VALORE_MIN = valoreMin;
     }
+
+    /*public void setDominioNonNumerico(ArrayList<String> dom) {
+        this.dominioNonNumerico = dom;
+        this.VALORE_MIN = 0;
+        this.VALORE_MAX = dom.size();
+    }
+
+     */
+
+    /*public String getInfoNonNum() {
+        return dominioNonNumerico.get(this.getValore());
+    }
+
+     */
 
     /**Permette di modificare estremo superiore del dominio in cui cade l'informazione
      * @param VALORE_MAX nuovo valore massimo possibile per l'informazione
@@ -53,7 +75,7 @@ public class Informazione implements Serializable {
     /**Fornisce la misura/valore dell'informazione, un valore casuale che cade entro il dominio specificato
      * @return valore numerico dell'informazione
      */
-    public int getValore() {
+    protected int getValore() {
         return (int) (Math.random() * (this.VALORE_MAX - this.VALORE_MIN) + this.VALORE_MIN);
     }
 
@@ -83,4 +105,19 @@ public class Informazione implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    @Override
+    public String toString() {
+        return "info :[ " + this.nome + " | " + this.getValore() + " ]";
+    }
+
+    /*public boolean isNumerico() {
+        return numerico;
+    }
+
+    public void setNumerico(boolean numerico) {
+        this.numerico = numerico;
+    }
+
+     */
 }
