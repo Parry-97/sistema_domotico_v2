@@ -160,20 +160,14 @@ public class Artefatto {
 
         //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno
         for (Sensore s: listaSensori) {
-            visualizza.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
-            visualizza.append("E dispone delle seguenti informazioni rilevabili: \n");
-
             ArrayList<Informazione> infoRileva = s.getRilevazioni();
+            visualizza.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
+            visualizza.append(infoRileva.get(0).toString()).append("\n");
+            visualizza.append("E dispone delle seguenti informazioni rilevabili: \n");
 
             for (int i = 1; i < infoRileva.size(); i++) {
                 visualizza.append(infoRileva.get(i));
             }
-            /*if (s.getCategoria().isFisico())
-                 visualizza.append("Misura: ").append(s.getRilevazioni()).append("\n");
-            else
-                visualizza.append("Stato: ").append(s.getRilevazioni()).append("\n");
-
-             */
 
         }
 
