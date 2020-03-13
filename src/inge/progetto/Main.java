@@ -93,7 +93,7 @@ public class Main {
                 
         do {
             do {
-                operatore = InputDati.leggiStringa("Selezionare il tipo di Utente(manutentore/fruitore) o FINE per uscire: ");
+                operatore = InputDati.leggiStringa("Selezionare il tipo di Utente(manutentore/fruitoreeeeee) o FINE per uscire: ");
             } while (!operatore.equals("manutentore") && !operatore.equals("fruitore") && !operatore.equals("FINE"));
 
             if (operatore.equals("manutentore")) {
@@ -734,9 +734,17 @@ public class Main {
                                 sceltaVisualizza = InputDati.leggiIntero("Seleziona funzionalità: ");
                                 switch (sceltaVisualizza) {
                                     case 1:
+                                        if (unitaImmobiliare.getTipo().equals("")) {
+                                            System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
+                                            break;
+                                        }
                                         System.out.println(unitaImmobiliare.visualizzaDescrizione());
                                         break;
                                     case 2:
+                                        if (unitaImmobiliare.getTipo().equals("")) {
+                                            System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
+                                            break;
+                                        }
                                         if (unitaImmobiliare.getListaStanze().isEmpty()) {
                                             System.out.println("E' necessario creare almeno una stanza prima di utilizzare questa funzione");
                                             break;
@@ -746,6 +754,10 @@ public class Main {
                                         }
                                         break;
                                     case 3:
+                                        if (unitaImmobiliare.getTipo().equals("")) {
+                                            System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
+                                            break;
+                                        }
                                         if (unitaImmobiliare.getListaArtefatti().isEmpty()) {
                                             System.out.println("E' necessario creare almeno un artefatto prima di utilizzare questa funzione");
                                             break;
