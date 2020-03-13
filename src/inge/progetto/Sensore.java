@@ -116,4 +116,13 @@ public class Sensore {
         this.statoAttivazione = statoAttivazione;
     }
 
+    @Override
+    public String toString() {
+        String visualizza ="Nome sensore: " + this.getNome() + ", rilevazioni effettuate:\n";
+        for(Informazione info : this.getRilevazioni()) {
+            if(!info.getNome().equals("STATO"))
+                visualizza += info.getNome() + info.getValore();
+        }
+        return  visualizza;
+    }
 }

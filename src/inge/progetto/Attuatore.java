@@ -146,7 +146,7 @@ public class Attuatore {
 
                 HashMap<String, Integer> nuoviParam = mod.getParametri();
                 ModalitaOperativa nuovaMod = new ModalitaOperativa(nuovaModalita, nuoviParam);
-                nuovaMod.setParametro(nuovaModalita, valoreParametro);
+                nuovaMod.setParametro(nomeParametro, valoreParametro);
                 //TODO: Necessario magari definire nuova modalità operativa con stesso nome ma magari param diversi
                 modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
 

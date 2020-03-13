@@ -66,6 +66,7 @@ public class ModalitaOperativa extends Informazione //TODO: Incorporare cambiame
             return;
         }
         parametri.put(nome,valoreParam);
+        System.out.println("Il parametro è stato impostato correttamente al nuovo valore");
     }
 
 

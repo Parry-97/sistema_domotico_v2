@@ -102,7 +102,7 @@ public class Main {
                 do {
                     System.out.println("\n1) CREA O SELEZIONA UNITA' IMMOBILIARE\n2) CREA STANZA\n3) AGGIUNGI UNA CATEGORIA DI SENSORI\n4) AGGIUNGI UNA CATEGORIA DI ATTUATORI\n" +
                             "5) CREA ARTEFATTO\n6) CREA NUOVA MODALITA' OPERATIVA\n7) CREA ATTUATORE\n8) ASSEGNA MODALITA' OPERATIVA AD UNA CATEGORIA DI ATTUATORI\n9) CREA SENSORE\n" +
-                            "10) AGGIUNGI SENSORE E ATUATORE AD ARTEFATTO\n11) AGGIUNGI ARTEFATTO A STANZA\n12) AGGIUNGI SENSORE A STANZA\n13) MOSTRA RILEVAZIONI DI UN SENSORE\n" +
+                            "10) AGGIUNGI SENSORE E ATTUATORE AD ARTEFATTO\n11) AGGIUNGI ARTEFATTO A STANZA\n12) AGGIUNGI SENSORE A STANZA\n13) MOSTRA RILEVAZIONI DI UN SENSORE\n" +
                             "14) SETTA NUOVA MODALITA' ATTUATORE\n15) VISUALIZZA TUTTO\n16) SALVA CATEGORIE DI SENSORI E ATTUATORI SU FILE\n17) RIPRISTINA CATEGORIE DI SENSORI E ATTUATORI\n0) USCITA");
 
                     caso = InputDati.leggiIntero("Seleziona funzionalità: ");
@@ -171,51 +171,32 @@ public class Main {
 
                                 String informazione;
                                 ArrayList<Informazione> infoRilevabili = new ArrayList<>();
-                                ArrayList<String> dominioNonNum = new ArrayList<>();
-                                ArrayList<Informazione> infoRilevabiliNonNum = new ArrayList<>();
-                                infoRilevabili.add(new Informazione("STATO"));
+                                if(!fisico)
+                                    infoRilevabili.add(new Informazione("STATO"));
                                 boolean infoDoppia;
-                                //TODO: STATO da mettere solo categoria non fisica(da associare ad un artefatto), per ogni info rilevabile chiede se questa e num o non num
-                                if(fisico) {
-                                    do {
-                                        infoDoppia = false;
-                                        informazione = InputDati.leggiStringa("Inserisci l'informazione che rileva la categoria creata oppure fine per uscire: ");
-                                        if(!informazione.equals("fine")) {
-                                            for (Informazione info : infoRilevabili) {
-                                                if (info.getNome().equals(informazione)) {
-                                                    infoDoppia = true;
-                                                    break;
-                                                }
+                                do {
+                                    infoDoppia = false;
+                                    informazione = InputDati.leggiStringa("Inserisci l'informazione che rileva la categoria creata oppure fine per uscire: ");
+                                    if(!informazione.equals("fine")) {
+                                        for (Informazione info : infoRilevabili) {
+                                            if (info.getNome().equals(informazione)) {
+                                                infoDoppia = true;
+                                                break;
                                             }
-                                            if (infoDoppia)
-                                                System.out.println("L'informazione inserità è già presente per questa categoria oppure fine per uscire");
-                                            else {
+                                        }
+                                        if(infoDoppia)
+                                            System.out.println("L'informazione presente è già stata inserita precedentemente");
+                                        else {
+                                            boolean isNum = InputDati.yesOrNo("L'informazione rilevabile è numerica o ha un dominio non numerico?");
+                                            if(isNum) {
                                                 int min = InputDati.leggiIntero("Inserisci il valore minimo di " + informazione + " che la categoria acquisisce: ");
                                                 int max = InputDati.leggiIntero("Inserisci il valore massimo di " + informazione + " che la categoria acquisisce: ");
                                                 infoRilevabili.add(new Informazione(informazione, max, min));
                                                 System.out.println("Informazione rilevabile inserita correttamente");
-                                            }
-                                        }
-                                    } while (!informazione.equals("fine"));
-                                    tempCategoria.setInfoRilevabili(infoRilevabili);
-                                    System.out.println("Informazione numerica inserita correttamente nella categoria creata!");
-                                }
-                                if(!fisico) {
-                                    do {
-                                        informazione = InputDati.leggiStringa("Inserisci l'informazione che rileva la categoria creata oppure fine per uscire: ");
-                                        infoDoppia = false;
-                                        if(!informazione.equals("fine")) {
-                                            for (Informazione info : infoRilevabili) {
-                                                if(info.getNome().equals(informazione)) {
-                                                    infoDoppia = true;
-                                                    break;
-                                                }
-                                            }
-                                            if(infoDoppia)
-                                                System.out.println("L'informazione inserità è già presente per questa categoria");
-                                            else {
+                                            } else {
                                                 String rilevazione;
                                                 boolean rilevazioneDoppia;
+                                                ArrayList<String> dominioNonNum = new ArrayList<>();
                                                 do {
                                                     rilevazioneDoppia = false;
                                                     rilevazione = InputDati.leggiStringa("Inserisci una rilevazione appertenente al dominio che effettua questo tipo di informazione: ");
@@ -230,15 +211,14 @@ public class Main {
                                                         }
                                                     }
                                                 } while (!rilevazione.equals("fine"));
-                                                infoRilevabiliNonNum.add(new InformazioneNonNum(informazione, dominioNonNum));
+                                                infoRilevabili.add(new InformazioneNonNum(informazione, dominioNonNum));
                                             }
                                         }
-                                    } while (!informazione.equals("fine"));
-                                    tempCategoria.setInfoRilevabili(infoRilevabiliNonNum);
-                                    System.out.println("Informazione non numerica inserita correttamente nella categoria creata!");
-                                }
+                                    }
+                                } while(!informazione.equals("fine"));
+                                tempCategoria.setInfoRilevabili(infoRilevabili);
+                                System.out.println("Informazioni inserite correttamente nella categoria creata");
                             }
-
                             break;
                         case 4:
                             String nomeCategoriaAttuatore = InputDati.leggiStringa("\nInserisci nome della nuova categoria di attuatori: ");
@@ -258,7 +238,8 @@ public class Main {
                             }
 
                             break;
-                        case 5://TODO: controlla tutto
+                        case 5:
+                            boolean siStato = false;
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("Unità Immobiliare non creata. E' necessario definirla prima della creazione di un artefatto");
                                 break;
@@ -277,6 +258,7 @@ public class Main {
                             String nomeStato = InputDati.leggiStringa("Inserisci stato di default per il nuovo artefatto: ");
                             for (ModalitaOperativa modalita : listaModalitaOperative) {
                                 if (modalita.getNome().equals(nomeStato)) {
+                                    siStato = true;
                                     if(modalita.isParametrica()) {
                                         String nomeParam = InputDati.leggiStringa("Inserisci il nome del parametro di " + modalita.getNome() + ": ");
                                         if(modalita.getParametri().containsKey(nomeParam)) {
@@ -287,9 +269,10 @@ public class Main {
                                         unitaImmobiliare.aggiungiArtefatto(new Artefatto(nomeArtefatto, new ModalitaOperativa(nomeStato)));
                                         break;
                                     }
-                                } /*else
-                                    System.out.println("Lo stato attuale non è stato definito. E' necessario definirlo prima di poterlo assegnare ad un artefatto");*/
+                                }
                             }
+                            if(!siStato)
+                                System.out.println("Lo stato attuale non è stato definito. E' necessario definirlo prima di poterlo assegnare ad un artefatto");
 
                             break;
                         case 6:
@@ -489,7 +472,7 @@ public class Main {
                                     System.out.println("Nome Artefatto: " + ar.getNome());
                                 }
                             }
-                            String artefatto = InputDati.leggiStringa("Inserisci il nome dell'artefato sul quale aggiungere sensore e attuatore: ");
+                            String artefatto = InputDati.leggiStringa("Inserisci il nome dell'artefatto sul quale aggiungere sensore e attuatore: ");
                             for (Artefatto arte : unitaImmobiliare.getListaArtefatti()) {
                                 if (arte.getNome().equals(artefatto)) {
                                     siArtefatto = true;
@@ -660,7 +643,6 @@ public class Main {
                             for (Sensore sensore : listaSensori) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
-                                    //TODO: Tocca modificare perchè le info rilevabili sono moltepilici, fare toString decente
                                     System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazioni().toString());
                                     break;
                                 }
@@ -669,7 +651,7 @@ public class Main {
                                 System.out.println("Sensore non presente. E' necessario crearlo");
 
                             break;
-                        case 14://TODO: verificare
+                        case 14:
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("Unità Immobiliare non creata. E' necessario definirla prima di questa operazione");
                                 break;
@@ -699,16 +681,13 @@ public class Main {
                                         if (modal.getNome().equals(nuovaMod)) {
                                             siMod = true;
                                             if(modal.isParametrica()) {
-                                                String nomeParam = InputDati.leggiStringa("Inserisci il nome delparametro per questa modalità operativa: ");
-                                                if(modal.getParametri().containsKey(nomeParam)) {
-                                                    int nuovoVal = InputDati.leggiIntero("Inserisci il nuovo valore per questa modalità parametrica");
-                                                    a.setModalitaAttuale(nuovaMod, nomeParam, nuovoVal);
-                                                    break;
-                                                }
+                                                String nomeParam = InputDati.leggiStringa("Inserisci il nome del parametro per questa modalità operativa: ");
+                                                int nuovoVal = InputDati.leggiIntero("Inserisci il nuovo valore per questa modalità parametrica: ");
+                                                a.setModalitaAttuale(nuovaMod, nomeParam, nuovoVal);
                                             } else {
                                                 a.setModalitaAttuale(nuovaMod);
-                                                break;
                                             }
+                                            break;
                                         }
                                     }
                                     break;
