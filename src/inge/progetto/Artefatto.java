@@ -39,8 +39,8 @@ public class Artefatto {
     public Artefatto(String nome, ModalitaOperativa statoAttuale) {
         this.statoAttuale = statoAttuale;
         this.nome = nome;
-        this.listaSensori = new ArrayList<Sensore>();
-        this.listaAttuatori = new ArrayList<Attuatore>();
+        this.listaSensori = new ArrayList<>();
+        this.listaAttuatori = new ArrayList<>();
     }
 
     /**Fornisce lo stato attuale dell'artefatto
@@ -55,7 +55,6 @@ public class Artefatto {
      */
     public void setStatoAttuale(ModalitaOperativa statoAttuale) {
         for (Sensore s: listaSensori) {
-            //s.setRilevazione(statoAttuale); TODO: Meglio magari un aggiungiMisura(aggiunge alla lista di info rilevabili)
             s.modificaRilevazione(this.statoAttuale, statoAttuale);
         }
         this.statoAttuale = statoAttuale;
@@ -158,7 +157,7 @@ public class Artefatto {
 
         visualizza.append("E dispone dei seguenti sensori:\n");
 
-        //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno
+
         for (Sensore s: listaSensori) {
             ArrayList<Informazione> infoRileva = s.getRilevazioni();
             visualizza.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");

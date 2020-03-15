@@ -40,6 +40,7 @@ public class Attuatore {
      * sono definite nella sua {@link #categoria}.
      */
     private String modalitaAttuale;
+
     /**
      * Lo stato(spento o acceso) dell'attuatore
      */
@@ -126,8 +127,9 @@ public class Attuatore {
             if(mod.getNome().equals(nuovaModalita)) {
                 this.modalitaAttuale = nuovaModalita;
 
-                //TODO: Necessario magari definire nuova modalità operativa con stesso nome ma magari param diversi
-                modificaArtefatti(mod); //conseguente cambiamento di stato degli artefatti comandati
+
+
+                modificaArtefatti(new ModalitaOperativa(nuovaModalita)); //conseguente cambiamento di stato degli artefatti comandati
 
                 System.out.println("Nuova modalità");
                 return;
@@ -136,7 +138,14 @@ public class Attuatore {
         System.out.println("Questa modalità non esiste per questo attuatore");
     }
 
+
+    //TODO: Rompe il cazzo di avere modalità attuale come stringa ...devo sempre andare a prendere variabile dalla categoria
     public void setModalitaAttuale(String nuovaModalita, String nomeParametro, int valoreParametro) {
+        if (listaComandati.isEmpty()) {
+            System.out.println("XX L'attuatore non comanda alcun artefatto XX");
+            return;
+        }
+
         if(this.modalitaAttuale.equals(nuovaModalita)) {
             System.out.println("Sei già in questa modalità");
         }
@@ -144,12 +153,13 @@ public class Attuatore {
             if(mod.getNome().equals(nuovaModalita)) {
                 this.modalitaAttuale = nuovaModalita;
 
-                HashMap<String, Integer> nuoviParam = mod.getParametri();
+                HashMap<String, Integer> nuoviParam = (HashMap<String, Integer>) mod.getParametri().clone();
                 ModalitaOperativa nuovaMod = new ModalitaOperativa(nuovaModalita, nuoviParam);
                 nuovaMod.setParametro(nomeParametro, valoreParametro);
-                //TODO: Necessario magari definire nuova modalità operativa con stesso nome ma magari param diversi
+
                 modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
 
+                //TODO: Sistemare se rimane nella stessa modalità
                 System.out.println("Nuova modalità");
                 return;
             }
@@ -158,10 +168,6 @@ public class Attuatore {
     }
 
 
-    //In caso durante settaggio si voglia anche settare parametro della modalita operativa
-    public void setModalitaAttuale(String nuovaModalita, int nomeParam, int valoreParam) {
-
-    }
 
 
     /** Modifica la modalit&agrave; operatica/stato degli artefatti comandati dall'attuatore
@@ -169,10 +175,6 @@ public class Attuatore {
      */
 
     private void modificaArtefatti(ModalitaOperativa mod) {
-        if (listaComandati.isEmpty()) {
-            System.out.println("** L'attuatore non comanda alcun artefatto **");
-            return;
-        }
 
         for (Artefatto art: listaComandati) {
             art.setStatoAttuale(mod);

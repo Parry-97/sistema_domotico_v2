@@ -111,9 +111,12 @@ public class Stanza {
             visualizza.append(a.visualizzaDispositivi());
         }
 
-        //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno con quel getValore()
+
         for (Sensore s : listaSensori) {
-            visualizza.append("Nome Sensore: ").append(s.getNome()).append(" | ").append("Categoria: ").append(s.getCategoria().getNome()).append(" | ").append("Rilevazione: ").append(s.getRilevazioni()).append("\n");
+            visualizza.append("Nome Sensore: ").append(s.getNome()).append(" | ").append("Categoria: ").append(s.getCategoria().getNome()).append(" | ").append("Rilevazioni: \n");
+            for (Informazione info : s.getRilevazioni()) {
+                visualizza.append("§ ").append(info.toString());
+            }
         }
         return visualizza.toString();
 
