@@ -77,7 +77,7 @@ public class ModalitaOperativa extends Informazione
     public String toString() {
         StringBuilder out = new StringBuilder("Modalita Operativa: " + this.getNome());
         if (!this.parametri.isEmpty()) {
-            out.append("\nParametri = ");
+            out.append("\n### Parametri = ");
             for (String key : parametri.keySet()) {
                 out.append("...[ ").append(key).append(":").append(parametri.get(key)).append(" ]");
             }

@@ -2,7 +2,6 @@ package inge.progetto;
 
 import it.unibs.fp.mylib.*;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.*;
 
@@ -193,6 +192,7 @@ public class Main {
                                 ArrayList<Informazione> infoRilevabili = new ArrayList<>();
                                 if (!fisico)
                                     infoRilevabili.add(new Informazione("STATO"));
+
                                 boolean infoDoppia;
                                 do {
                                     infoDoppia = false;
@@ -215,18 +215,17 @@ public class Main {
                                                 System.out.println("*** Informazione rilevabile inserita correttamente *** ");
                                             } else {
                                                 String rilevazione;
-                                                //boolean rilevazioneDoppia;
                                                 ArrayList<String> dominioNonNum = new ArrayList<>();
                                                 do {
-                                                    //rilevazioneDoppia = false;
-                                                    rilevazione = InputDati.leggiStringa("Inserisci una rilevazione(stringa) appartenente al dominio per questo tipo di informazione o fine per terminare: ");
-                                                    if (!rilevazione.equals("fine")) {
-                                                        if (dominioNonNum.contains(rilevazione))
-                                                            /*rilevazioneDoppia = true;
-                                                        if (rilevazioneDoppia)
 
-                                                             */
+                                                    rilevazione = InputDati.leggiStringa("Inserisci una rilevazione(stringa) appartenente al dominio per questo tipo di informazione o fine per terminare: ");
+
+
+                                                    if (!rilevazione.equals("fine")) {
+
+                                                        if (dominioNonNum.contains(rilevazione))
                                                             System.out.println("La rilevazione inserita è già presente per questa categoria");
+
                                                         else {
                                                             dominioNonNum.add(rilevazione);
                                                             System.out.println("Rilevazione non numerica  inserita correttamente");
@@ -237,6 +236,7 @@ public class Main {
                                             }
                                         }
                                     }
+
                                 } while (!informazione.equals("fine") || infoRilevabili.isEmpty());
                                 tempCategoria.setInfoRilevabili(infoRilevabili);
                                 System.out.println("\n *** Informazioni inserite correttamente nella categoria creata ***");
@@ -447,10 +447,18 @@ public class Main {
                                 if (cate.getNome().equals(nomeCategoriaAtt)) {
                                     presenzaCate = true;
 
-                                    System.out.println("\n...MODALITA' OPERATIVE ATTUALMENTE CREATE...");
+                                    ArrayList<ModalitaOperativa> modsgiaPresenti = cate.getModalita();
+                                    System.out.println("\n...MODALITA' OPERATIVE ATTUALMENTE CREATE E DISPONIBILI...");
+                                    StringBuilder visualizza = new StringBuilder();
                                     for (ModalitaOperativa modalit : listaModalitaOperative) {
-                                        System.out.println("--- Nome modalità: " + modalit.getNome());
+                                        if(!modsgiaPresenti.contains(modalit))
+                                            visualizza.append("--- Nome modalità: ").append(modalit.getNome());
                                     }
+
+                                    if (visualizza.length() > 0)
+                                        System.out.println(visualizza.toString());
+                                    else
+                                        System.out.println("! Non sono disponibili ulteriori modalità operative per questa categoria !");
 
                                     String moda = InputDati.leggiStringa("Inserisci il nome della modalità operativa da aggiungere: ");
                                     for (ModalitaOperativa m : listaModalitaOperative) {
@@ -528,8 +536,8 @@ public class Main {
                             }
 
                             boolean siArtefatto = false;
-                            //boolean siSensore = false;
-                            //boolean siAttuatore = false;
+                            boolean siSensore = false;
+                            boolean siAttuatore = false;
 
 
                             System.out.println("\n...ARTEFATTI ATTUALMENTE CREATI...");
@@ -556,7 +564,7 @@ public class Main {
                                         for (Sensore sensor : listaSensori) {
                                             if (sensor.getNome().equals(sensore)) {
                                                 arte.aggiungiSensore(sensor);
-                                                //siSensore = true;
+                                                siSensore = true;
                                                 break;
                                             }
                                         }
@@ -577,13 +585,18 @@ public class Main {
                                     if (!attuatore.equals("N")) {
                                         for (Attuatore att : listaAttuatori) {
                                             if (att.getNome().equals(attuatore)) {
+                                                siAttuatore = true;
                                                 if (att.isSingolo()) {
                                                     for (Artefatto art : unitaImmobiliare.getListaArtefatti()) {
                                                         if (art.getListaAttuatori().contains(att)) {
+                                                            siAttuatore = false;
                                                             System.out.println("!!! Non è possibile aggiungere l'attuatore !!!");
                                                             break;
                                                         }
                                                     }
+                                                    //TODO: Rivedere magari codice che si ripete
+                                                    if (siAttuatore)
+                                                        arte.aggiungiAttuatore(att);
                                                 } else {
                                                     arte.aggiungiAttuatore(att);
                                                     break;
@@ -601,6 +614,13 @@ public class Main {
                                 System.out.println("!!! L'artefatto non esiste tra quelli attualmente creati !!! ");
                                 break;
                             }
+
+                            if (siSensore)
+                                System.out.println("*** Il sensore è stato correttamente aggiunto all'artefatto ***");
+
+                            if (siAttuatore)
+                                System.out.println("*** L'attuatore è stato correttamente aggiunto all'artefatto ***");
+
 
                             break;
 
@@ -820,7 +840,7 @@ public class Main {
                             break;
                         case 15:
 
-
+                            //TODO: Se delle robe non sono presenti...lista di sensori in artefatto o stanza o stanza vuota...far capire all'utente invece di spazi vuoti
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +
