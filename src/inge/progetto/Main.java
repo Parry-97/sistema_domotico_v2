@@ -264,7 +264,7 @@ public class Main {
                                         if(modalita.getParametri().containsKey(nomeParam)) {
                                              unitaImmobiliare.aggiungiArtefatto(new Artefatto(nomeArtefatto, new ModalitaOperativa(nomeStato, modalita.getParametri())));
                                         } else
-                                            System.out.println("La modalità paramentrica inserita non è stata definita per questa modalità oprativa");
+                                            System.out.println("La modalità paramentrica inserita non è stata definita per questa modalità operativa");
                                     } else {
                                         unitaImmobiliare.aggiungiArtefatto(new Artefatto(nomeArtefatto, new ModalitaOperativa(nomeStato)));
                                         break;
@@ -704,8 +704,6 @@ public class Main {
 
                             break;
                         case 15:
-
-
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +
@@ -828,11 +826,31 @@ public class Main {
             } else if (operatore.equals("fruitore")){
                 int caso;
                 do {
-                    System.out.println("\n1) MOSTRA RILEVAZIONI DI UN SENSORE\n2) SETTA NUOVA MODALITA' ATTUATORE\n3) VISUALIZZA TUTTO\n0) USCITA");
+                    System.out.println("\n1)SELEZIONA UNITA' IMMOBILIARE\n2) MOSTRA RILEVAZIONI DI UN SENSORE\n3) SETTA NUOVA MODALITA' ATTUATORE\n4) VISUALIZZA TUTTO\n0) USCITA");
                     caso = InputDati.leggiIntero("Seleziona funzionalità: ");
 
                     switch (caso) {
                         case 1:
+                            String seleziona = InputDati.leggiStringa("Inserisci il nome dell'unità immobiliare sulla quale effettuare le azioni: ");
+                                boolean presente = false;
+                                if(listaUnitaImmobiliari.isEmpty())
+                                    System.out.println("Non è stata creata nessuna unità immobiliare al momento!");
+                                else {
+                                    for(UnitaImmobiliare immo : listaUnitaImmobiliari) {
+                                        if(immo.getTipo().equals(seleziona)) {
+                                            presente = true;
+                                            unitaImmobiliare = immo;
+                                            break;
+                                        }
+                                    }
+                                    if(presente)
+                                        System.out.println(unitaImmobiliare.getTipo() + " è stata seleziona come unità immobiliare corrente");
+                                    else
+                                        System.out.println("Unità immobiliare seleziona non è ancora stata creata");
+                                }
+
+                            break;
+                        case 2:
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione");
                                 break;
@@ -849,16 +867,15 @@ public class Main {
                             for (Sensore sensore : listaSensori) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
-                                    //TODO: Tocca modificare l'ottenimento dell'informazione perche possono essere molteplici (fai foreach semmai)
-                                    //System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazioni().getValore());
+                                    System.out.println("Rilevazione letta dal sensore " + sensore.getNome() + ": " + sensore.getRilevazioni().toString());//mettere apposto output
                                     break;
                                 }
                             }
                             if (!siSen)
-                                System.out.println("Il sensore non è presente tra quelli creati.");
+                                System.out.println("Sensore non presente. Non è stato creato");
 
                             break;
-                        case 2:
+                        case 3:
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione");
                                 break;
@@ -876,7 +893,7 @@ public class Main {
                             for (Attuatore a : listaAttuatori) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
-                                    System.out.println("---Attuatore: " + a.getNome() + ", stato attuale: " + a.getModalitaAttuale() + "---");
+                                    System.out.println("Attuatore: " + a.getNome() + ", stato attuale: " + a.getModalitaAttuale());
                                     if (!listaModalitaOperative.isEmpty()) {
                                         System.out.println("...MODALITA' OPERATIVE ATTUALMENTE CREATE DAL MANUTENTORE...");
                                         for (ModalitaOperativa m : listaModalitaOperative) {
@@ -886,8 +903,14 @@ public class Main {
                                     String nuovaMod = InputDati.leggiStringa("Inserisci la nuova modalità per questo attuatore: ");
                                     for (ModalitaOperativa modal : a.getCategoria().getModalita()) {
                                         if (modal.getNome().equals(nuovaMod)) {
-                                            a.setModalitaAttuale(nuovaMod);
                                             siMod = true;
+                                            if(modal.isParametrica()) {
+                                                String nomeParam = InputDati.leggiStringa("Inserisci il nome del parametro per questa modalità operativa: ");
+                                                int nuovoVal = InputDati.leggiIntero("Inserisci il nuovo valore per questa modalità parametrica: ");
+                                                a.setModalitaAttuale(nuovaMod, nomeParam, nuovoVal);
+                                            } else {
+                                                a.setModalitaAttuale(nuovaMod);
+                                            }
                                             break;
                                         }
                                     }
@@ -895,16 +918,16 @@ public class Main {
                                 }
                             }
                             if (!siAttua) {
-                                System.out.println("L'attuatore non esiste.");
+                                System.out.println("L'attuatore non esiste");
                                 break;
                             }
                             if (!siMod) {
-                                System.out.println("La modalità inserita non esite.");
+                                System.out.println("La modalità inserita non esite");
                                 break;
                             }
 
                             break;
-                        case 3:
+                        case 4:
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +
