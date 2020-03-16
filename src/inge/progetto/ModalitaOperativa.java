@@ -18,12 +18,6 @@ public class ModalitaOperativa extends Informazione
     //Hashmap con nome e valore dei possibili parametri della modalità operativa
     private HashMap<String, Integer> parametri;
 
-    /*  *
-     * Un valore intero unico, specificato dal manutentore, che permette di  avere una rappresentazione numerica
-     * della modalit&agrave; operativa, usata dal sistema per acquisizione di informazioni/misure attraverso sensori.
-     */
-     // private int valore; Magari non mi serve piu perchè posso anche avere info non numeriche ora
-
     /**Costruttore della classe
      * La modalit&agrave; operativa &egrave; completamente specificata dal manutentore
      * con nome e valore prefissato
@@ -44,8 +38,6 @@ public class ModalitaOperativa extends Informazione
         this.parametri = parametri;
     }
 
-
-
     /**
      * Ci permette di ricavare il valore informativo/numerico precedentemente assegnato dal manutentore alla
      * modalit&agrave; operativa (guarda costruttore).
@@ -55,7 +47,6 @@ public class ModalitaOperativa extends Informazione
      * @see Informazione
      */
 
-    //Per ora è una mia versione di settaggio parametro da parte dell'utente e conseguente assegnamento al valore della modalita operativa
     public void setParametro(String nome, int valoreParam) {
         if (parametri.isEmpty()) {
             System.out.println("!!! La modalità operativa non è parametrica !!! Riprova");
@@ -71,8 +62,6 @@ public class ModalitaOperativa extends Informazione
         System.out.println("*** Il parametro è stato impostato correttamente al nuovo valore ***");
     }
 
-
-
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder("Modalita Operativa: " + this.getNome());
@@ -85,14 +74,6 @@ public class ModalitaOperativa extends Informazione
         return String.valueOf(out);
     }
 
-    /**Permette la modifica del valore numerico associato alla modalit&agrave; operativa
-     * //@param valore nuovo valore da assegnare alla modalit&agrave; operativa
-     */
-    /*public void setValore(int valore) {
-        this.valore = valore;
-    }
-
-     */
     public boolean isParametrica() {
         return !parametri.isEmpty();
     }

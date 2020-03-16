@@ -97,7 +97,7 @@ public class Stanza {
                 return;
         }
         listaArtefatti.add(a);
-        System.out.println("Artefatto aggiunto");
+        System.out.println("*** Artefatto aggiunto correttamente alla stanza ***");
 
     }
 
@@ -105,19 +105,24 @@ public class Stanza {
      * @return stringa descrittiva della stanza
      */
     public String visualizzaDisposizione() {
-        StringBuilder visualizza = new StringBuilder("Nome Stanza: " + this.getNome() + ", essa possiede:\n");
-
-        for (Artefatto a: listaArtefatti) {
-            visualizza.append(a.visualizzaDispositivi());
-        }
-
-
-        for (Sensore s : listaSensori) {
-            visualizza.append("Nome Sensore: ").append(s.getNome()).append(" | ").append("Categoria: ").append(s.getCategoria().getNome()).append(" | ").append("Rilevazioni: \n");
-            for (Informazione info : s.getRilevazioni()) {
-                visualizza.append("§ ").append(info.toString());
+        StringBuilder visualizza = new StringBuilder("Nome Stanza: " + this.getNome() + ", essa possiede:\n\n");
+        if(!listaArtefatti.isEmpty()) {
+            for (Artefatto a : listaArtefatti) {
+                visualizza.append(a.visualizzaDispositivi());
             }
-        }
+        } else
+            visualizza.append("!!! Al momento non sono stati attribuiti artefatti per questa stanza !!!\n");
+
+        if(!listaSensori.isEmpty()) {
+            for (Sensore s : listaSensori) {
+                visualizza.append("Nome Sensore: ").append(s.getNome()).append(", ").append("categoria: ").append(s.getCategoria().getNome()).append(", ").append("rilevazioni: \n");
+                for (Informazione info : s.getRilevazioni()) {
+                    visualizza.append("__ ").append(info.toString());
+                }
+            }
+        } else
+            visualizza.append("!!! In questa stanza non sono presenti sensori !!!\n");
+
         return visualizza.toString();
 
     }

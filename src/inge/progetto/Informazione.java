@@ -90,6 +90,6 @@ public class Informazione implements Serializable {
 
     @Override
     public String toString() {
-        return "info :[ " + this.nome + " | " + this.getValore() + " ]";
+        return "[" + this.nome + " : " + this.getValore() + "]";
     }
 }

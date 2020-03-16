@@ -78,13 +78,13 @@ public class CategoriaAttuatore implements Serializable {
         if(!modalita.isEmpty()) {
             for (ModalitaOperativa m : modalita) {
                 if(m.getNome().equals(mod.getNome())) {
-                    System.out.println("Modalità Operativa già presente per questa categoria");
+                    System.out.println("!!! Modalità Operativa già presente per questa categoria !!!");
                     return;
                 }
             }
         }
         modalita.add(mod);
-        System.out.println("Modalità Operativa aggiunta");
+        System.out.println("*** Modalità Operativa aggiunta correttamente ***");
 
     }
 

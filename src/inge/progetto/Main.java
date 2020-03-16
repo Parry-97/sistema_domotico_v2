@@ -23,66 +23,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        /*ArrayList<Informazione> testInfos1 = new ArrayList<>();
-        ArrayList<Informazione> testInfos2 = new ArrayList<>();
-
-        ArrayList<String> domNonNum = new ArrayList<>();
-        domNonNum.add("Presente");
-        domNonNum.add("Non-Presente");
-
-        testInfos1.add(new Informazione("STATO"));//funge da placeholder per stato artefatto
-        testInfos1.add(new Informazione("temp_interna_lamp", 50, -50));
-
-        testInfos2.add(new InformazioneNonNum("Presenza Persone", domNonNum));
-
-        HashMap<String, Integer> parametri = new HashMap<>();
-        parametri.put("energia_media_dissipata", 100);
-
-        CategoriaAttuatore catInt = new CategoriaAttuatore("interruttore", "dadad");
-        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Acceso")); //Codice di v1
-        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Spento"));
-        catInt.aggiungiModalitaOperativa(new ModalitaOperativa("Risparmio", parametri));
-
-        CategoriaSensore cats1 = new CategoriaSensore("sensLamp","sdasdada",false);
-        cats1.setInfoRilevabili(testInfos1);
-
-        CategoriaSensore cats2 = new CategoriaSensore("VideoSorv", "sdadadsd", true);
-        cats2.setInfoRilevabili(testInfos2);
-
-        Sensore s1 = new Sensore("s1",cats1);
-        Sensore sVid = new Sensore("vid", cats2);
-
-        Artefatto lampada1 = new Artefatto("lampada1", new ModalitaOperativa("Spento"));
-        Artefatto lampada2 = new Artefatto("lampada2", new ModalitaOperativa("Spento"));
-
-        Attuatore int1 = new Attuatore("int1", catInt,"Spento",false);
-        Attuatore int2 = new Attuatore("int2", catInt, "Spento",false);
-
-        lampada1.aggiungiSensore(s1);
-        lampada1.aggiungiAttuatore(int1);
-
-        lampada2.aggiungiAttuatore(int2);
-
-        System.out.println(" *** Misure di sVid e s1 : ");
-        for (int i = 0; i < 12; i++) {
-
-            if(i == 4)
-                int1.setModalitaAttuale("Acceso","energia_media_dissipata", 10);
-
-
-            if (i == 8)
-                int1.setModalitaAttuale("Risparmio", "energia_media_dissipata",80);
-
-            System.out.println( i +") " + "sVid: " + sVid.getRilevazioni());
-            System.out.println("    S1: " + s1.getRilevazioni()) ;
-        }
-
-        System.out.println("\nT2) Misure di sensLamp");
-        System.out.println(lampada1.visualizzaDispositivi());
-        System.out.println(lampada2.visualizzaDispositivi());
-
-         */
-
         UnitaImmobiliare unitaImmobiliare = new UnitaImmobiliare(); //Ma perche??!? Ma che roba di merda è???
         ArrayList<UnitaImmobiliare> listaUnitaImmobiliari = new ArrayList<>();
         ArrayList<CategoriaAttuatore> listaCategoriaAttuatori = new ArrayList<>();
@@ -452,7 +392,7 @@ public class Main {
                                     StringBuilder visualizza = new StringBuilder();
                                     for (ModalitaOperativa modalit : listaModalitaOperative) {
                                         if(!modsgiaPresenti.contains(modalit))
-                                            visualizza.append("--- Nome modalità: ").append(modalit.getNome());
+                                            visualizza.append("--- Nome modalità: ").append(modalit.getNome()).append("\n");
                                     }
 
                                     if (visualizza.length() > 0)
@@ -568,6 +508,8 @@ public class Main {
                                                 break;
                                             }
                                         }
+                                        if(!siSensore)
+                                            System.out.println("!!! Il sensore selezionato non esiste tra quelli attualmente creati !!!");
                                     } else {
                                         System.out.println("XX Non è stato aggiunto alcun sensore XX");
                                     }
@@ -839,13 +781,12 @@ public class Main {
 
                             break;
                         case 15:
-
                             //TODO: Se delle robe non sono presenti...lista di sensori in artefatto o stanza o stanza vuota...far capire all'utente invece di spazi vuoti
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +
                                         "4) VISUALIZZA LISTA SENSORI E CATEGORIE SENSORI\n5) VISUALIZZA LISTA ATTUATORI E CATEGORIE ATTUATORI\n6) VISUALIZZA LISTA MODALITA' OPERATIVE\n0) USCITA");
-                                sceltaVisualizza = InputDati.leggiIntero("Seleziona funzionalità: ");
+                                sceltaVisualizza = InputDati.leggiIntero("### Seleziona funzionalità: ");
                                 switch (sceltaVisualizza) {
                                     case 1:
                                         if (unitaImmobiliare.getTipo().equals("")) {
@@ -916,7 +857,7 @@ public class Main {
                                     case 6:
                                         System.out.println();
                                         if (listaModalitaOperative.isEmpty())
-                                            System.out.println("Lista modalità operatice attualmente vuota. E' necessario crearne di nuove per utilizzare questa funzione");
+                                            System.out.println("Lista modalità operative attualmente vuota. E' necessario crearne di nuove per utilizzare questa funzione");
                                         else {
                                             for (ModalitaOperativa mod : listaModalitaOperative)
                                                 System.out.println("--- Nome modalità operativa: " + mod.toString());
@@ -975,36 +916,33 @@ public class Main {
             } else if (operatore.equals("fruitore")) {
                 int caso;
                 do {
-                    System.out.println("\n1) MOSTRA RILEVAZIONI DI UN SENSORE\n2) SETTA NUOVA MODALITA' ATTUATORE\n3) VISUALIZZA TUTTO\n0) USCITA");
-                    caso = InputDati.leggiIntero("Seleziona funzionalità: ");
+                    System.out.println("\n1) SELEZIONARE UN'UNITA' IMMOBILIARE PER EFFETTUARE LE OPERAZIONI DESIDERATE\n2) MOSTRA RILEVAZIONI DI UN SENSORE\n3) SETTA NUOVA MODALITA' ATTUATORE\n4) VISUALIZZA TUTTO\n0) USCITA\n");
+                    caso = InputDati.leggiIntero("# Seleziona funzionalità: ");
 
                     switch (caso) {
                         case 1:
-                            if (unitaImmobiliare.getTipo().equals("")) {
-                                System.out.println(" !!! Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione !!! ");
-                                break;
-                            }
-                            boolean siSen = false;
-                            System.out.println();
-                            if (!listaSensori.isEmpty()) {
-                                System.out.println("...SENSORI INSTALLATI...");
-                                for (Sensore s : listaSensori) {
-                                    System.out.println("Nome sensore: " + s.getNome());
-                                }
-                            }
-                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
-                            for (Sensore sensore : listaSensori) {
-                                if (sensore.getNome().equals(ss)) {
-                                    siSen = true;
 
-                                    for (Informazione info : sensore.getRilevazioni()) {
-                                        System.out.println("# " + info);
+                            String seleziona = InputDati.leggiStringa("Accedi ad un'unità immobiliare  già creata per utilizzare le funzionalità del sistema(nome unità immobiliare da selezionare): ");
+                            if (seleziona.equals(unitaImmobiliare.getNome())) {
+                                System.out.println(seleziona + " è stata già selezionata come unità immobiliare corrente ! ");
+                            } else {
+                                boolean presente = false;
+                                if (listaUnitaImmobiliari.isEmpty())
+                                    System.out.println("!!! Non è stata creata nessuna unità immobiliare al momento, è necessario che il manutentore ne crei una !!!");
+                                else {
+                                    for (UnitaImmobiliare immo : listaUnitaImmobiliari) {
+                                        if (immo.getNome().equals(seleziona)) {
+                                            presente = true;
+                                            unitaImmobiliare = immo;
+                                            break;
+                                        }
                                     }
-                                    break;
+                                    if (presente)
+                                        System.out.println("*** " + unitaImmobiliare.getNome() + " è stata selezionata come unità immobiliare corrente ***");
+                                    else
+                                        System.out.println("!!! Unità immobiliare specificata non è ancora stata creata !!!");
                                 }
                             }
-                            if (!siSen)
-                                System.out.println("XXX Il sensore non è presente tra quelli creati XXX");
 
                             break;
                         case 2:
@@ -1012,31 +950,84 @@ public class Main {
                                 System.out.println("!!! Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione !!!");
                                 break;
                             }
-                            boolean siAttua = false;
-                            boolean siMod = false;
-                            System.out.println();
-                            if (!listaAttuatori.isEmpty()) {
-                                System.out.println("...ATTUATORI ATTUALMENTE CREATI DAL MANUTENTORE...");
-                                for (Attuatore attr : listaAttuatori) {
-                                    System.out.println("--- Nome attuatore: " + attr.getNome());
+
+                            if (listaSensori.isEmpty()) {
+                                System.out.println("XX Non sono presenti sensori da cui poter leggere rilevazioni XX");
+                                break;
+                            }
+
+                            boolean siSen = false;
+
+                            System.out.println("\n...SENSORI ATTUALMENTE CREATI DAL MANUTENTORE...");
+
+                            for (Sensore s : listaSensori) {
+                                System.out.println("--- Nome sensore: " + s.getNome());
+                            }
+
+                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
+                            for (Sensore sensore : listaSensori) {
+                                if (sensore.getNome().equals(ss)) {
+                                    siSen = true;
+                                    for (Informazione info: sensore.getRilevazioni()) {
+                                        System.out.println(info);
+                                    }
+                                    break;
                                 }
                             }
+                            if (!siSen)
+                                System.out.println("XXX Sensore non presente. E' necessario crearlo XXX");
+
+                            break;
+                        case 3:
+                            if (unitaImmobiliare.getTipo().equals("")) {
+                                System.out.println("!!! Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione !!!");
+                                break;
+                            }
+
+                            if (listaAttuatori.isEmpty()) {
+                                System.out.println("!!! Non è presente alcun attuatore con cui poter agire !!!");
+                                break;
+                            }
+
+                            boolean siAttua = false;
+                            boolean siMod = false;
+
+                            System.out.println("\n...ATTUATORI ATTUALMENTE CREATI DAL MANUTENTORE...");
+                            for (Attuatore attr : listaAttuatori) {
+                                System.out.println("--- Nome attuatore: " + attr.getNome());
+                            }
+
                             String nomeAtt = InputDati.leggiStringa("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
                             for (Attuatore a : listaAttuatori) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
-                                    System.out.println("---Attuatore: " + a.getNome() + ", stato attuale: " + a.getModalitaAttuale() + "---");
-                                    if (!listaModalitaOperative.isEmpty()) {
-                                        System.out.println("...MODALITA' OPERATIVE ATTUALMENTE CREATE DAL MANUTENTORE...");
-                                        for (ModalitaOperativa m : listaModalitaOperative) {
-                                            System.out.println("--- Nome modalità operativa: " + m.getNome());
-                                        }
+
+
+                                    System.out.println("Attuatore: " + a.getNome() + ", modalità operativa attuale: " + a.getModalitaAttuale());
+
+                                    System.out.println("...MODALITA' OPERATIVE DELL'ATTUATORE DAL MANUTENTORE...");
+                                    for (ModalitaOperativa m : a.getCategoria().getModalita()) {
+                                        System.out.println("--- Nome modalità operativa: " + m.getNome());
                                     }
+
+
                                     String nuovaMod = InputDati.leggiStringa("Inserisci la nuova modalità per questo attuatore: ");
                                     for (ModalitaOperativa modal : a.getCategoria().getModalita()) {
                                         if (modal.getNome().equals(nuovaMod)) {
-                                            a.setModalitaAttuale(nuovaMod);
                                             siMod = true;
+
+                                            if (modal.isParametrica()) {
+                                                System.out.println("...PARAMETRI DELLA MODALITA'...");
+                                                HashMap<String, Integer> params = modal.getParametri();
+                                                for (String key : params.keySet()) {
+                                                    System.out.println("--- Nome parametro: " + key + ", valore parametro: " + params.get(key));
+                                                }
+                                                String nomeParam = InputDati.leggiStringa("Inserisci il nome del parametro per questa modalità operativa: ");
+                                                int nuovoVal = InputDati.leggiIntero("Inserisci il nuovo valore per questa modalità parametrica: ");
+                                                a.setModalitaAttuale(nuovaMod, nomeParam, nuovoVal);
+                                            } else {
+                                                a.setModalitaAttuale(nuovaMod);
+                                            }
                                             break;
                                         }
                                     }
@@ -1044,21 +1035,21 @@ public class Main {
                                 }
                             }
                             if (!siAttua) {
-                                System.out.println("!!! L'attuatore non esiste. !!!");
+                                System.out.println("!!! L'attuatore non esiste. E' necessario crearlo !!!");
                                 break;
                             }
                             if (!siMod) {
-                                System.out.println("!!! La modalità inserita non esiste !!!");
+                                System.out.println("!!! La modalità inserita non esiste. E' necessario crearla !!!");
                                 break;
                             }
 
                             break;
-                        case 3:
+                        case 4:
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +
-                                        "4) VISUALIZZA LISTA SENSORI E CATEGORIE SENSORI\n5) VISUALIZZA LISTA ATTUATORI E CATEGORIE ATTUATORI\n0) USCITA");
-                                sceltaVisualizza = InputDati.leggiIntero("Seleziona funzionalità: ");
+                                        "4) VISUALIZZA LISTA SENSORI E CATEGORIE SENSORI\n5) VISUALIZZA LISTA ATTUATORI E CATEGORIE ATTUATORI\n6) VISUALIZZA LISTA MODALITA' OPERATIVE\n0) USCITA");
+                                sceltaVisualizza = InputDati.leggiIntero("### Seleziona funzionalità: ");
                                 switch (sceltaVisualizza) {
                                     case 1:
                                         if (unitaImmobiliare.getTipo().equals("")) {
@@ -1072,9 +1063,8 @@ public class Main {
                                             System.out.println("!!! Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione !!!");
                                             break;
                                         }
-
                                         if (unitaImmobiliare.getListaStanze().isEmpty()) {
-                                            System.out.println("!!! E' necessario che esista almeno una stanza prima di utilizzare questa funzione !!!");
+                                            System.out.println("E' necessario creare almeno una stanza prima di utilizzare questa funzione");
                                             break;
                                         }
                                         for (Stanza stanzetta : unitaImmobiliare.getListaStanze()) {
@@ -1086,9 +1076,8 @@ public class Main {
                                             System.out.println("!!! Unità Immobiliare non creata. E' necessario che il manutentore ne definisca una prima di questa operazione !!!");
                                             break;
                                         }
-
                                         if (unitaImmobiliare.getListaArtefatti().isEmpty()) {
-                                            System.out.println("!!! E' necessario che esista almeno un artefatto prima di utilizzare questa funzione !!!");
+                                            System.out.println("E' necessario creare almeno un artefatto prima di utilizzare questa funzione");
                                             break;
                                         }
                                         for (Artefatto artefattino : unitaImmobiliare.getListaArtefatti()) {
@@ -1098,14 +1087,14 @@ public class Main {
                                     case 4:
                                         System.out.println();
                                         if (listaSensori.isEmpty())
-                                            System.out.println("!!! Non è stato installato alcun sensore !!!");
+                                            System.out.println("Lista sensori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
                                             for (Sensore s : listaSensori) {
-                                                System.out.println("--- Nome Sensore: " + s.getNome());
+                                                System.out.println("Nome Sensore: " + s.getNome());
                                             }
                                         }
                                         if (listaCategoriaSensori.isEmpty())
-                                            System.out.println("!!! E' necessario che esista almeno una categoria di sensori per utilizzare questa funzione !!!");
+                                            System.out.println("Lista categoria sensori attualmente vuota. E' necessario crearne di nuove per utilizzare questa funzione");
                                         else {
                                             for (CategoriaSensore catSens : listaCategoriaSensori)
                                                 System.out.println("--- Nome categoria sensori: " + catSens.getNome());
@@ -1115,17 +1104,26 @@ public class Main {
                                     case 5:
                                         System.out.println();
                                         if (listaAttuatori.isEmpty())
-                                            System.out.println("!!! Non è stato installato alcun attuatore !!! ");
+                                            System.out.println("Lista attuatori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
                                             for (Attuatore att : listaAttuatori) {
-                                                System.out.println("--- Nome Attuatore: " + att.getNome());
+                                                System.out.println("Nome Attuatore: " + att.getNome());
                                             }
                                         }
                                         if (listaCategoriaAttuatori.isEmpty())
-                                            System.out.println("!!! E' necessario che esista almeno una categoria di attuatori per utilizzare questa funzione !!!");
+                                            System.out.println("Lista categoria attuatori attualmente vuota. E' necessario crearne di nuove per utilizzare questa funzione");
                                         else {
                                             for (CategoriaAttuatore catAtt : listaCategoriaAttuatori)
-                                                System.out.println("--- Nome categoria sensori: " + catAtt.getNome());
+                                                System.out.println("--- Nome categoria attuatori: " + catAtt.getNome());
+                                        }
+                                        break;
+                                    case 6:
+                                        System.out.println();
+                                        if (listaModalitaOperative.isEmpty())
+                                            System.out.println("Lista modalità operative attualmente vuota. E' necessario crearne di nuove per utilizzare questa funzione");
+                                        else {
+                                            for (ModalitaOperativa mod : listaModalitaOperative)
+                                                System.out.println("--- Nome modalità operativa: " + mod.toString());
                                         }
                                         break;
                                     case 0:

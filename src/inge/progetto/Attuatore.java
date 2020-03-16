@@ -160,15 +160,12 @@ public class Attuatore {
                 modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
 
                 //TODO: Sistemare se rimane nella stessa modalità
-                System.out.println("Nuova modalità");
+                System.out.println("*** Nuova modalità ***");
                 return;
             }
         }
         System.out.println("Questa modalità non esiste per questo attuatore");
     }
-
-
-
 
     /** Modifica la modalit&agrave; operatica/stato degli artefatti comandati dall'attuatore
      * @param mod nuova modalit&agrave; operativa da assegnare agli artefatti comandati dall'attuatore

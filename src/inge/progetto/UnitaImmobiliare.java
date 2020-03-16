@@ -113,7 +113,7 @@ public class UnitaImmobiliare {
             }
         }
         listaArtefatti.add(a);
-        System.out.println("Artefatto aggiunto");
+        System.out.println("*** Artefatto creato correttamente ***");
 
     }
 
@@ -121,13 +121,13 @@ public class UnitaImmobiliare {
      * @return stringa descrittiva dell'intera unit&agrave; immobiliare
      */
     public String visualizzaDescrizione() {
-        String visualizza = "Tipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n";
+        String visualizza = "\nTipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n";
 
         for (Stanza stanza : listaStanze) {
             visualizza += stanza.visualizzaDisposizione();
         }
 
-        visualizza += "\nArtefatti esterni all'unità immobiliare:\n";
+        visualizza += "\n\nArtefatti esterni all'unità immobiliare:\n";
         for(Stanza stanza : listaStanze) {
             for (Artefatto artefatto : listaArtefatti) {
                 if(!stanza.getListaArtefatti().contains(artefatto))
