@@ -19,7 +19,7 @@ public class Sensore {
     private CategoriaSensore categoria;
 
     /** informazione o misura che il sensore rileva (guarda {@link Informazione})*/
-    private ArrayList<Informazione> rilevazioni; //TODO: Cosa fa un sensore con info multiple ma associato ad un artefatto
+    private ArrayList<Informazione> rilevazioni;
 
     /** stato del sensore ovvero se questi &egrave; abilitato o meno, attivo o spento*/
     private boolean statoAttivazione;
@@ -76,7 +76,7 @@ public class Sensore {
      * @param rilevazione nuova informazione che il sensore rileva
      * @see Informazione
      */
-    public void setRilevazione(Informazione  rilevazione) { //TODO: magari conviene 'aggiungere invece di settare
+    public void setRilevazione(Informazione  rilevazione) {
 
         //Mantenendo un'po la logica di prima: si ha che se il sensore è fisico allora a questi non si possono associare artefatti
         //Quelli non fisici avranno come primo elemento Informazione di inforilevabili un informazione casuale inizialmente di nome STATO che cambiamo

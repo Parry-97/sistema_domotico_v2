@@ -39,8 +39,8 @@ public class Artefatto {
     public Artefatto(String nome, ModalitaOperativa statoAttuale) {
         this.statoAttuale = statoAttuale;
         this.nome = nome;
-        this.listaSensori = new ArrayList<Sensore>();
-        this.listaAttuatori = new ArrayList<Attuatore>();
+        this.listaSensori = new ArrayList<>();
+        this.listaAttuatori = new ArrayList<>();
     }
 
     /**Fornisce lo stato attuale dell'artefatto
@@ -55,7 +55,6 @@ public class Artefatto {
      */
     public void setStatoAttuale(ModalitaOperativa statoAttuale) {
         for (Sensore s: listaSensori) {
-            //s.setRilevazione(statoAttuale); TODO: Meglio magari un aggiungiMisura(aggiunge alla lista di info rilevabili)
             s.modificaRilevazione(this.statoAttuale, statoAttuale);
         }
         this.statoAttuale = statoAttuale;
@@ -152,24 +151,37 @@ public class Artefatto {
     public String visualizzaDispositivi() {
         StringBuilder visualizza = new StringBuilder("Nome Artefatto: " + this.getNome() + ", lista attuatori che lo comandano:\n");
 
+        StringBuilder attStr = new StringBuilder();
         for (Attuatore a: listaAttuatori) {
-            visualizza.append(a.getNome()).append(", categoria: ").append(a.getCategoria().getNome()).append(", modalità attuale: ").append(a.getModalitaAttuale()).append("\n");
+            attStr.append(a.getNome()).append(", categoria: ").append(a.getCategoria().getNome()).append(", modalità attuale: ").append(a.getModalitaAttuale()).append("\n");
         }
+
+        if (attStr.length() > 0)
+            visualizza.append("! Nessun attuatore pilota presente !");
+        else
+            visualizza.append(attStr.toString());
 
         visualizza.append("E dispone dei seguenti sensori:\n");
 
-        //TODO: Tocca modificare l'ottenimento della 'misura' e verificare se è numerica o meno
+        StringBuilder sensStr = new StringBuilder();
+
         for (Sensore s: listaSensori) {
             ArrayList<Informazione> infoRileva = s.getRilevazioni();
-            visualizza.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
-            visualizza.append(infoRileva.get(0).toString()).append("\n");
-            visualizza.append("E dispone delle seguenti informazioni rilevabili: \n");
+            sensStr.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
+            sensStr.append(infoRileva.get(0).toString()).append("\n");
+            sensStr.append("E dispone delle seguenti informazioni rilevabili: \n");
 
-            for (int i = 1; i < infoRileva.size(); i++) {
-                visualizza.append(infoRileva.get(i));
+            for (Informazione info: s.getRilevazioni()) {
+                sensStr.append(info.toString());
             }
 
         }
+
+        if (sensStr.length() > 0)
+            visualizza.append("! Nessun sensore associato !");
+        else
+            visualizza.append(sensStr.toString());
+
 
         return visualizza.toString();
     }

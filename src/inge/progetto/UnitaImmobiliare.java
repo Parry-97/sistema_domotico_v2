@@ -18,7 +18,7 @@ public class UnitaImmobiliare {
 
     /**
      * insieme di artefatti nell'unit&agrave; immobiliare e che non sono collocati entro le stanze
-     * Ex: Un cancello non e collocato in una stanza, bens&igrave; all'esterno
+     * Ex: Un cancello non &egrave; collocato in una stanza, bens&igrave; all'esterno
      */
     private ArrayList<Artefatto> listaArtefatti;
 
@@ -27,12 +27,16 @@ public class UnitaImmobiliare {
      */
     private String tipo;
 
+    private String nome;
+
     /**Costruttore per specifica di un oggetto UnitaImmboliare
      * @param tipo destinazione d'uso dell'unit&agrave; immobiliare
      */
-    public UnitaImmobiliare(String tipo) {
+    public UnitaImmobiliare(String tipo, String nome) {
+
         this.listaArtefatti = new ArrayList<>();
         this.listaStanze = new ArrayList<>();
+        this.nome = nome;
         this.tipo = tipo;
     }
 
@@ -90,12 +94,12 @@ public class UnitaImmobiliare {
     public void aggiungiStanza(Stanza s) {
         for (Stanza stanza : listaStanze) {
             if (stanza.getNome().equals(s.getNome())) {
-                System.out.println("Stanza già presente");
+                System.out.println("Una stanza " + s.getNome() + " è già presente");
                 return;
             }
         }
         listaStanze.add(s);
-        System.out.println("Stanza aggiunta");
+        System.out.println("*** La stanza " + s.getNome() + " è stata correttamente aggiunta ***");
     }
 
     /**Permette di aggiungere artefatti, esterni a stanze, nell'unit&agrave; immobiliare
@@ -133,4 +137,7 @@ public class UnitaImmobiliare {
         return visualizza;
     }
 
+    public String getNome() {
+        return nome;
+    }
 }

@@ -47,7 +47,7 @@ public class CategoriaSensore implements Serializable {
         this.fisico = fisico;
     }
 
-    //TODO: L'arraylist infos deve'essere definito tutto nel Main
+
     public CategoriaSensore(String nome, String testolibero, boolean fisico, ArrayList<Informazione> infos) {
         this.nome = nome;
         this.testolibero = testolibero;

@@ -1,8 +1,10 @@
 package inge.progetto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class InformazioneNonNum extends Informazione {
+public class InformazioneNonNum extends Informazione
+                                implements Serializable {
     private ArrayList<String> dominioNonNumerico;
 
 
@@ -27,6 +29,6 @@ public class InformazioneNonNum extends Informazione {
 
     @Override
     public String toString() {
-        return "InfoNaN: [ " + super.getNome() + " | " + this.dominioNonNumerico.get(super.getValore()) + " ]";
+        return "[ Nome informazione: " + super.getNome() + " | Rilevazione: " + this.dominioNonNumerico.get(super.getValore()) + " ]";
     }
 }

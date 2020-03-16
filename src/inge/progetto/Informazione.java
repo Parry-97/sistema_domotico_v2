@@ -1,7 +1,6 @@
 package inge.progetto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Rappresenta l'informazione/misura che il sistema domotico acquisisce attaverso ogni singolo sensori dislocati
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 public class Informazione implements Serializable {
 
     private String nome;
-    //private ArrayList<String> dominioNonNumerico;
-    //private boolean numerico; Forse non serve
 
 
     /**rappresentano il range/dominio entro cui cade il valore dell'informazione; hanno già dei
@@ -39,24 +36,9 @@ public class Informazione implements Serializable {
 
     public Informazione(String nome, int valoreMax, int valoreMin) {
         this.nome = nome;
-        //this.dominioNonNumerico = new ArrayList<>();
         this.VALORE_MAX = valoreMax;
         this.VALORE_MIN = valoreMin;
     }
-
-    /*public void setDominioNonNumerico(ArrayList<String> dom) {
-        this.dominioNonNumerico = dom;
-        this.VALORE_MIN = 0;
-        this.VALORE_MAX = dom.size();
-    }
-
-     */
-
-    /*public String getInfoNonNum() {
-        return dominioNonNumerico.get(this.getValore());
-    }
-
-     */
 
     /**Permette di modificare estremo superiore del dominio in cui cade l'informazione
      * @param VALORE_MAX nuovo valore massimo possibile per l'informazione
@@ -110,14 +92,4 @@ public class Informazione implements Serializable {
     public String toString() {
         return "info :[ " + this.nome + " | " + this.getValore() + " ]";
     }
-
-    /*public boolean isNumerico() {
-        return numerico;
-    }
-
-    public void setNumerico(boolean numerico) {
-        this.numerico = numerico;
-    }
-
-     */
 }

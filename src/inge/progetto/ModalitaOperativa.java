@@ -12,13 +12,13 @@ import java.util.HashMap;
  *
  * @see Informazione
  */
-public class ModalitaOperativa extends Informazione //TODO: Incorporare cambiamenti provenienti da classe padre Informazione
+public class ModalitaOperativa extends Informazione
                                 implements Serializable {
 
     //Hashmap con nome e valore dei possibili parametri della modalità operativa
     private HashMap<String, Integer> parametri;
 
-    /**
+    /*  *
      * Un valore intero unico, specificato dal manutentore, che permette di  avere una rappresentazione numerica
      * della modalit&agrave; operativa, usata dal sistema per acquisizione di informazioni/misure attraverso sensori.
      */
@@ -37,7 +37,7 @@ public class ModalitaOperativa extends Informazione //TODO: Incorporare cambiame
         this.parametri = new HashMap<>();
     }
 
-    //TODO: Creare HashMap nel Main quando si crearlo durante creazione di modalità operativa parametrica
+
     public ModalitaOperativa(String nome, HashMap<String, Integer> parametri) {
         super(nome); //Costruttore della classe padre (Informazione)
         //this.valore = valore;
@@ -58,15 +58,17 @@ public class ModalitaOperativa extends Informazione //TODO: Incorporare cambiame
     //Per ora è una mia versione di settaggio parametro da parte dell'utente e conseguente assegnamento al valore della modalita operativa
     public void setParametro(String nome, int valoreParam) {
         if (parametri.isEmpty()) {
-            System.out.println("La modalità operativa non è parametrica");
+            System.out.println("!!! La modalità operativa non è parametrica !!! Riprova");
             return;
         }
         else if (!parametri.containsKey(nome)) {
-            System.out.println("La modalita operativa non ha un parametro con questo nome");
+            System.out.println("!!! La modalita operativa non ha un parametro con questo nome !!! Riprova");
             return;
         }
+
+
         parametri.put(nome,valoreParam);
-        System.out.println("Il parametro è stato impostato correttamente al nuovo valore");
+        System.out.println("*** Il parametro è stato impostato correttamente al nuovo valore ***");
     }
 
 
@@ -75,7 +77,7 @@ public class ModalitaOperativa extends Informazione //TODO: Incorporare cambiame
     public String toString() {
         StringBuilder out = new StringBuilder("Modalita Operativa: " + this.getNome());
         if (!this.parametri.isEmpty()) {
-            out.append("\nParametri = ");
+            out.append("\n### Parametri = ");
             for (String key : parametri.keySet()) {
                 out.append("...[ ").append(key).append(":").append(parametri.get(key)).append(" ]");
             }
