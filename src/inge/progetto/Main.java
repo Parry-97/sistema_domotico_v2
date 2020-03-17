@@ -23,7 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        UnitaImmobiliare unitaImmobiliare = new UnitaImmobiliare(); //Ma perche??!? Ma che roba di merda è???
+        UnitaImmobiliare unitaImmobiliare = new UnitaImmobiliare();
         ArrayList<UnitaImmobiliare> listaUnitaImmobiliari = new ArrayList<>();
         ArrayList<CategoriaAttuatore> listaCategoriaAttuatori = new ArrayList<>();
         ArrayList<CategoriaSensore> listaCategoriaSensori = new ArrayList<>();
@@ -536,7 +536,6 @@ public class Main {
                                                             break;
                                                         }
                                                     }
-                                                    //TODO: Rivedere magari codice che si ripete
                                                     if (siAttuatore)
                                                         arte.aggiungiAttuatore(att);
                                                 } else {
@@ -781,7 +780,6 @@ public class Main {
 
                             break;
                         case 15:
-                            //TODO: Se delle robe non sono presenti...lista di sensori in artefatto o stanza o stanza vuota...far capire all'utente invece di spazi vuoti
                             int sceltaVisualizza;
                             do {
                                 System.out.println("\n1) VISUALIZZA COMPOSIZIONE UNITA' IMMOBILIARE\n2) VISUALIZZA COMPOSIZIONE STANZE\n3) VISUALIZZA COMPOSIZIONE ARTEFATTI\n" +

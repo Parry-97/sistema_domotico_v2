@@ -73,29 +73,19 @@ public class Sensore {
      *  come temperatura o pressione ed &egrave; quindi vietato alterarne il contenuto informativo. Il tipo di sensore e le informazioni
      *  da questo rilevabili sono definite nella sua categoria (vedi {@link CategoriaSensore})
      *
+     * Mantenendo la logica precedente: si ha che se il sensore è fisico allora a questi non si possono associare artefatti
+     * Quelli non fisici avranno come primo elemento Informazione di inforilevabili un informazione casuale inizialmente di nome STATO che viene viene cambiato
+     * quando viene chiamato questo metodo.
+     *
      * @param rilevazione nuova informazione che il sensore rileva
      * @see Informazione
      */
     public void setRilevazione(Informazione  rilevazione) {
-
-        //Mantenendo un'po la logica di prima: si ha che se il sensore è fisico allora a questi non si possono associare artefatti
-        //Quelli non fisici avranno come primo elemento Informazione di inforilevabili un informazione casuale inizialmente di nome STATO che cambiamo
-        //quando chiamiamo questo metodo.
-        if(this.categoria.isFisico()) {
+        if(this.categoria.isFisico())
             System.out.println("Non è possibile alterare le rilevazioni del sensore! \n");
-        }
-        else {
-            //Altrimenti possiamo semplicemente fare che la info al primo indice è una modalita operativa
-            //Il resto fotte sega
-            for (int i = 0; i < this.rilevazioni.size(); i++) {
-                if (this.rilevazioni.get(i).getNome().equals("STATO")) {
-                    this.rilevazioni.set(i,rilevazione);
-                    break;
-                }
-            }
-        }
+        else
+            this.rilevazioni.set(0,rilevazione);
     }
-
 
     public void modificaRilevazione(Informazione info1, Informazione info2) {
         if (rilevazioni.contains(info1))
@@ -116,6 +106,10 @@ public class Sensore {
         this.statoAttivazione = statoAttivazione;
     }
 
+    /**
+     *
+     * @return una rappresentazione descrittiva in formato testuale di un sensore
+     */
     @Override
     public String toString() {
         String visualizza ="Nome sensore: " + this.getNome() + ", rilevazioni effettuate:\n";

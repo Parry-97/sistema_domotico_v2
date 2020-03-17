@@ -47,7 +47,12 @@ public class CategoriaSensore implements Serializable {
         this.fisico = fisico;
     }
 
-
+    /**Costruttore per la specifica di un oggetto di tipo CategoriaSensore
+     * @param nome nome della categoria
+     * @param testolibero testo libero descrittivo
+     * @param fisico scopo della categoria di sensore
+     * @param infos specifica le informazioni descritte dalla categoria di sensore
+     */
     public CategoriaSensore(String nome, String testolibero, boolean fisico, ArrayList<Informazione> infos) {
         this.nome = nome;
         this.testolibero = testolibero;

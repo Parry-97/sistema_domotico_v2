@@ -131,15 +131,21 @@ public class Attuatore {
 
                 modificaArtefatti(new ModalitaOperativa(nuovaModalita)); //conseguente cambiamento di stato degli artefatti comandati
 
-                System.out.println("Nuova modalità");
+                System.out.println("*** Nuova modalità ***");
                 return;
             }
         }
         System.out.println("Questa modalità non esiste per questo attuatore");
     }
 
-
-    //TODO: Rompe il cazzo di avere modalità attuale come stringa ...devo sempre andare a prendere variabile dalla categoria
+    /** Specifica una nuova modalit&agrave; operativa per l'attuatore controllando prima
+     * che questa sia possibile(definita nel suo set di modalit&agrave; operative).
+     * Inoltre determina un cambiamento dello stato degli stati artefatti comandati
+     *
+     * @param nuovaModalita nome della nuova modalit&agrave; operativa
+     * @param nomeParametro nome del nuovo paramentro da settare
+     * @param valoreParametro setta il nuovo valore della modalità paramentrica inserita
+     */
     public void setModalitaAttuale(String nuovaModalita, String nomeParametro, int valoreParametro) {
         if (listaComandati.isEmpty()) {
             System.out.println("XX L'attuatore non comanda alcun artefatto XX");
@@ -159,8 +165,7 @@ public class Attuatore {
 
                 modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
 
-                //TODO: Sistemare se rimane nella stessa modalità
-                System.out.println("*** Nuova modalità ***");
+                System.out.println("*** Modalità modificata correttamente ***");
                 return;
             }
         }

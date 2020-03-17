@@ -62,6 +62,10 @@ public class ModalitaOperativa extends Informazione
         System.out.println("*** Il parametro è stato impostato correttamente al nuovo valore ***");
     }
 
+    /**
+     *
+     * @return stampa il toString della modalità operativa
+     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder("Modalita Operativa: " + this.getNome());
@@ -74,10 +78,17 @@ public class ModalitaOperativa extends Informazione
         return String.valueOf(out);
     }
 
+    /**
+     *
+     * @return True se la modalità operativa è paramentrica oppure false se non lo è
+     */
     public boolean isParametrica() {
         return !parametri.isEmpty();
     }
 
+    /**
+     * Effettua il get dell'HashMap che contiene la lista dei parametri di quella modalità operativa
+     */
     public HashMap<String, Integer> getParametri() {
         return parametri;
     }

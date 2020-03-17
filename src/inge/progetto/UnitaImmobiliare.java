@@ -40,7 +40,6 @@ public class UnitaImmobiliare {
         this.tipo = tipo;
     }
 
-
     public UnitaImmobiliare() {
         this.tipo = "";
     }

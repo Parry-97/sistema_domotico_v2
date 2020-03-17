@@ -121,8 +121,7 @@ public class Artefatto {
                 }
             }
         }
-        //vale ovviamente solo per sensori non fisici e funziona solo una volta...non è possibile per ora cambiare artefatto monitorati da un sensore
-        s.setRilevazione(this.statoAttuale); //TODO: Definire meglio concetto di info rilevabili multiple(Posso associare un sensore a piu artefatti ?: NO)
+        s.setRilevazione(this.statoAttuale);
         listaSensori.add(s);
     }
 
