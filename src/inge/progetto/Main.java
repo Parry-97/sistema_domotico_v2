@@ -596,6 +596,10 @@ public class Main {
                                                 }
                                             }
                                         }
+
+                                        if (!siAttuatore)
+                                            System.out.println("!!! L'attuatore specificato non è compreso tra quelli attualmente disponibili !!!");
+
                                     } else {
                                         System.out.println("XXX Non è stato assegnato alcun attuatore XXX");
                                     }
@@ -939,6 +943,7 @@ public class Main {
                             break;
 
                         case 16:
+
                             if (listaCategoriaSensori.isEmpty()) {
                                 System.out.println("\n!XX! Non sono presenti categorie di sensori da salvare !XX!");
                                 break;

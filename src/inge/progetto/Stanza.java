@@ -84,7 +84,7 @@ public class Stanza {
                 return;
         }
         listaSensori.add(sens);
-        System.out.println("Sensore aggiunto");
+        System.out.println("*** Sensore aggiunto ***");
 
     }
 
@@ -114,12 +114,12 @@ public class Stanza {
         } else
             visualizza.append("!!! Al momento non sono stati attribuiti artefatti per questa stanza !!!\n");
 
-        visualizza.append("# La stanza dispone inoltre dei seguenti sensori: ").append("\n");
+        visualizza.append("#").append(this.nome).append(" dispone inoltre dei seguenti sensori: ").append("\n");
         if(!listaSensori.isEmpty()) {
             for (Sensore s : listaSensori) {
                 visualizza.append("--Nome Sensore: ").append(s.getNome()).append(", ").append("categoria: ").append(s.getCategoria().getNome()).append(", ").append("rilevazioni: \n");
                 for (Informazione info : s.getRilevazioni()) {
-                    visualizza.append("# ").append(info.toString());
+                    visualizza.append("$").append(info.toString());
                 }
             }
         } else
