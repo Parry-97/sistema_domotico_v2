@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *Un artefatto &egrave; un oggetto(non naturale) il cui comportamento  pu&ograve; essere monitorato da un {@link Sensore}/i e comandato
@@ -38,8 +39,8 @@ public class Artefatto {
     public Artefatto(String nome, ModalitaOperativa statoAttuale) {
         this.statoAttuale = statoAttuale;
         this.nome = nome;
-        this.listaSensori = new ArrayList<Sensore>();
-        this.listaAttuatori = new ArrayList<Attuatore>();
+        this.listaSensori = new ArrayList<>();
+        this.listaAttuatori = new ArrayList<>();
     }
 
     /**Fornisce lo stato attuale dell'artefatto
@@ -53,10 +54,10 @@ public class Artefatto {
      * @param statoAttuale nuovo stato da assegnare all'artefatto
      */
     public void setStatoAttuale(ModalitaOperativa statoAttuale) {
-        this.statoAttuale = statoAttuale;
         for (Sensore s: listaSensori) {
-            s.setRilevazione(statoAttuale);
+            s.modificaRilevazione(this.statoAttuale, statoAttuale);
         }
+        this.statoAttuale = statoAttuale;
     }
 
     /**Fornisce il nome dell'artefatto
@@ -107,22 +108,16 @@ public class Artefatto {
      * @param s nuovo sensore da associare all'artefatto
      */
     public void aggiungiSensore(Sensore s) {
-        if (s.getCategoria().isFisico()) {
-            System.out.println("\n !!! Non è possibile collegare tale sensore all'artefatto scelto !!!");
-            return;
-        }
-
         if(!listaSensori.isEmpty()) {
             for (Sensore sensore : listaSensori) {
                 if (sensore.getNome().equals(s.getNome()) || sensore.getCategoria().getNome().equals(s.getCategoria().getNome())) {
-                    System.out.println("IMPOSSIBILE AGGINGERE SENSORE DELLA STESSA CATEGORIA !!!");
+                    System.out.println("!!! IMPOSSIBILE AGGINGERE SENSORE DELLA STESSA CATEGORIA !!!");
                     return;
                 }
             }
         }
         s.setRilevazione(this.statoAttuale);
         listaSensori.add(s);
-        System.out.println("Sensore aggiunto");
     }
 
     /**Associa un nuovo attuatore all'artefatto e aggiungere alla sua lista di attuatori
@@ -140,28 +135,46 @@ public class Artefatto {
 
         listaAttuatori.add(a);
         a.aggiungiArtefatto(this);
-        System.out.println("Attuatore aggiunto");
     }
 
     /**Fornisce una descrizione di tutti i dispositivi collegati all'artefatto
      * @return descrizione di sensori/attuatori collegati all'artefatto
      */
     public String visualizzaDispositivi() {
-        String visualizza = "Nome Artefatto: " + this.getNome() + ", lista attuatori che lo comandano:\n";
+        StringBuilder visualizza = new StringBuilder("Nome Artefatto: " + this.getNome() + ", lista attuatori che lo comandano:\n");
 
+        StringBuilder attStr = new StringBuilder();
         for (Attuatore a: listaAttuatori) {
-            visualizza +=  a.getNome() + ", categoria: " + a.getCategoria().getNome() + ", modalità attuale: " + a.getModalitaAttuale() + "\n";
+            attStr.append(a.getNome()).append(", categoria: ").append(a.getCategoria().getNome()).append(", modalità attuale: ").append(a.getModalitaAttuale()).append("\n");
         }
 
-        visualizza += "E dispone dei seguenti sensori:\n";
+        if (attStr.length() == 0)
+            visualizza.append("!!! Nessun attuatore pilota presente !!!\n");
+        else
+            visualizza.append(attStr.toString());
+
+        visualizza.append("E dispone dei seguenti sensori:\n");
+
+        StringBuilder sensStr = new StringBuilder();
+
         for (Sensore s: listaSensori) {
-            visualizza +=  s.getNome() + ", categoria: " + s.getCategoria().getNome();
-            if (s.getCategoria().isFisico())
-                 visualizza += "Misura: " +  s.getRilevazione().getValore() + "\n";
-            else
-                visualizza += "Stato: " + s.getRilevazione().getNome() + "\n";
+            ArrayList<Informazione> infoRileva = s.getRilevazioni();
+            sensStr.append("Nome: ").append(s.getNome()).append(", categoria: ").append(s.getCategoria().getNome()).append("\n");
+            sensStr.append(infoRileva.get(0).toString()).append("\n");
+            if(infoRileva.size() > 1) {
+                sensStr.append("E dispone delle seguenti informazioni rilevabili: \n");
+                for (int i = 1; i < s.getRilevazioni().size(); i++) {
+                    sensStr.append(s.getRilevazioni().get(i).toString()).append("\n");
+                }
+            }
+            sensStr.append("\n");
         }
 
-        return visualizza + "\n";
+        if (sensStr.length() == 0)
+            visualizza.append("!!! Nessun sensore associato !!!\n");
+        else
+            visualizza.append(sensStr.toString());
+
+        return visualizza.append("\n").toString();
     }
 }

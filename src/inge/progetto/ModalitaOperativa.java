@@ -1,11 +1,15 @@
 package inge.progetto;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Rappresenta la modalit&agrave; operativa di una determinato {@link Attuatore}e di conseguenza lo stato dell'{@link Artefatto}
  * ad esso associato. Permettendo cosi ad un attuatore, attraverso una specifica modalit&agrave;, di comandare
  * il comportamento dell'artefatto, misurato o comunque monitorato eventualmente da un {@link Sensore}.
+ *
+ * Una modalit&agrave; operativa pu&ograve; inoltre essere parametrica e quindi caratterizzata da dei {@link #parametri}: ad esempio un {@link Attuatore} destinato alla termoregolazione di un interno &egrave; eventulamente dotato di una modalit&agrave;
+ * operativa parametrica, dove un parametro &egrave; la temperatura desiderata impostata dal fruitore.
  *
  * @author Parampal Singh, Mattia Nodari
  *
@@ -14,43 +18,87 @@ import java.io.Serializable;
 public class ModalitaOperativa extends Informazione
                                 implements Serializable {
 
+
     /**
-     * Un valore intero unico, specificato dal manutentore, che permette di  avere una rappresentazione numerica
-     * della modalit&agrave; operativa, usata dal sistema per acquisizione di informazioni/misure attraverso sensori.
+     * Insieme di parametri di una modalit&agrave; operativa.
+     * Ciascun parametro &egrave; dotato di nome, diverso da quello degli altri parametri della medesima modalit&agrave; e assume un valore numerico
      */
-    private int valore;
+    private HashMap<String, Integer> parametri;
 
     /**Costruttore della classe
-     * La modalit&agrave; operativa &egrave; completamente specificata dal manutentore
-     * con nome e valore prefissato
-     *
+     * La modalit&agrave; operativa &egrave; non parametrica completamente specificata dal manutentore con nome
      * @param nome nome della modalit&agrave; operativa
-     * @param valore valore numerico della modalit&agrave; operativa
      */
-    public ModalitaOperativa(String nome, int valore) {
-        super(nome); //Costruttore della classe padre (Informazione)
-        this.valore = valore;
+    public ModalitaOperativa(String nome) {
+        super(nome);
+        this.parametri = new HashMap<>();
+    }
+
+
+    /**Costruisce un istanza di modalit&agrave; operativa; in questo sar&agrave; una modalita operativa parametrica in quanto vengono definiti anche i
+     * @param nome nome della modalit&agrave; operativa
+     * @param parametri parametri da specificare nel caso la modalit&agrave; sia parametrica
+     */
+    public ModalitaOperativa(String nome, HashMap<String, Integer> parametri) {
+        super(nome);
+        this.parametri = parametri;
+    }
+
+    /** Permette di modificare un parametro della modalità operativa
+     * @param nome nome del parametro che si desidera modificare
+     * @param valoreParam nuovo valore da assegnare al parametro
+     */
+    public void setParametro(String nome, int valoreParam) {
+        if (parametri.isEmpty()) {
+            System.out.println("!!! La modalità operativa non è parametrica !!! Riprova");
+            return;
+        }
+        else if (!parametri.containsKey(nome)) {
+            System.out.println("!!! La modalita operativa non ha un parametro con questo nome !!! Riprova");
+            return;
+        }
+
+
+        parametri.put(nome,valoreParam);
+        System.out.println("*** Il parametro è stato impostato correttamente al nuovo valore ***");
     }
 
     /**
-     * Ci permette di ricavare il valore informativo/numerico precedentemente assegnato dal manutentore alla
-     * modalit&agrave; operativa (guarda costruttore).
-     * Il metodo sovrascrive del omonimo metodo della classe padre(Informazione) dove il valore &egrave; generato casualmente
-     * ed &egrave; limitato da un range/dominio per la misura
-     *
-     * @see Informazione
+     * Fornisce una rappresentazione testuale che descrive brevemente l'istanza
+     * @return stampa il toString della modalità operativa
      */
     @Override
-    public int getValore() {
-        if(this.valore > super.getVALORE_MAX())
-            return super.getVALORE_MAX();
-        else return Math.max(this.valore, super.getVALORE_MIN());
+    public String toString() {
+        StringBuilder out = new StringBuilder("Modalita Operativa: " + this.getNome());
+        if (!this.parametri.isEmpty()) {
+            out.append("\n### Parametri = ");
+            for (String key : parametri.keySet()) {
+                out.append("...[ ").append(key).append(":").append(parametri.get(key)).append(" ]");
+            }
+        }
+        return String.valueOf(out);
     }
 
-    /**Permette la modifica del valore numerico associato alla modalit&agrave; operativa
-     * @param valore nuovo valore da assegnare alla modalit&agrave; operativa
+    /**
+     * Permette di conoscere se la modalità operativa è parametrica o meno
+     * @return True se la modalità operativa è paramentrica oppure false se non lo è
      */
-    public void setValore(int valore) {
-        this.valore = valore;
+    public boolean isParametrica() {
+        return !parametri.isEmpty();
+    }
+
+    /**
+     * Fornisce l'insieme dei parametri della modalità operativa
+     * @return parametri della modalità operativa
+     */
+    public HashMap<String, Integer> getParametri() {
+        return parametri;
+    }
+
+    /**Permette di specificare/modificare i parametri della modalità operativa
+     * @param parametri nuovi parametri da assegnare alla modalità operativa
+     */
+    public void setParametri(HashMap<String, Integer> parametri) {
+        this.parametri = parametri;
     }
 }

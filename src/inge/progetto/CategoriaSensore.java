@@ -1,6 +1,8 @@
 package inge.progetto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Ogni {@link Sensore} &egrave; descritto da una categoria. Essa &egrave; caratterizzata da un {@link #nome}, da un {@link #testolibero} di lunghezza
@@ -32,7 +34,7 @@ public class CategoriaSensore implements Serializable {
     /**
      * l'informazione rilevabile da sensori di questa categoria
      */
-    private Informazione infoRilevabile;
+    private ArrayList<Informazione> infoRilevabili;
 
     /**Costruttore per la specifica di un oggetto di tipo CategoriaSensore
      * @param nome nome della categoria
@@ -43,6 +45,19 @@ public class CategoriaSensore implements Serializable {
         this.nome = nome;
         this.testolibero = testolibero;
         this.fisico = fisico;
+    }
+
+    /**Costruttore per la specifica di un oggetto di tipo CategoriaSensore
+     * @param nome nome della categoria
+     * @param testolibero testo libero descrittivo
+     * @param fisico scopo della categoria di sensore
+     * @param infos specifica le informazioni descritte dalla categoria di sensore
+     */
+    public CategoriaSensore(String nome, String testolibero, boolean fisico, ArrayList<Informazione> infos) {
+        this.nome = nome;
+        this.testolibero = testolibero;
+        this.fisico = fisico;
+        this.infoRilevabili = infos;
     }
 
     /**Permette di ottenere il nome della categoria di sensore
@@ -74,31 +89,19 @@ public class CategoriaSensore implements Serializable {
         this.testolibero = testolibero;
     }
 
-    /**Permette di ottenere una rappresentazione testuale delle caratteristiche della categoria
-     * @return stringa descrittiva per la categoria
-     */
-    public String visualizzaCategoriaSensore() {
-        String visualizza = "Nome Categoria: " + this.getNome() + ", testo libero: " + this.getTestolibero() + ", RILEVAZIONIIIIII\n";
-/*
-        for (ModalitaOperativa lista: modalita) {
-            visualizza +=  lista.getNome() + "\n";
-        }
-*/
-        return visualizza;
-    }
 
     /**Fornisce l'informazione rilevabile da sensori di questa categoria
      * @return l'informazione rilevabile da sensori della stessa categoria
      */
-    public Informazione getInfoRilevabile() {
-        return infoRilevabile;
+    public ArrayList<Informazione> getInfoRilevabili() {
+        return infoRilevabili;
     }
 
     /**Permette di specificare il tipo di informazione rilevabile da sensori della stessa categoria
      * @param info nuova informazione rilevabile da assegnare alla categoria di sensori
      */
-    public void setInfoRilevabile(Informazione info) {
-        this.infoRilevabile = info;
+    public void setInfoRilevabili(ArrayList<Informazione> info) {
+        this.infoRilevabili = info;
     }
 
     /**Permette di conoscere lo scopo/natura dei sensori di una categoria.

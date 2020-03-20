@@ -18,7 +18,7 @@ public class UnitaImmobiliare {
 
     /**
      * insieme di artefatti nell'unit&agrave; immobiliare e che non sono collocati entro le stanze
-     * Ex: Un cancello non e collocato in una stanza, bens&igrave; all'esterno
+     * Ex: Un cancello non &egrave; collocato in una stanza, bens&igrave; all'esterno
      */
     private ArrayList<Artefatto> listaArtefatti;
 
@@ -27,16 +27,23 @@ public class UnitaImmobiliare {
      */
     private String tipo;
 
+    private String nome;
+
     /**Costruttore per specifica di un oggetto UnitaImmboliare
      * @param tipo destinazione d'uso dell'unit&agrave; immobiliare
+     * @param nome nome dell'unit&agrave; immobiliare
      */
-    public UnitaImmobiliare(String tipo) {
+    public UnitaImmobiliare(String tipo, String nome) {
+
         this.listaArtefatti = new ArrayList<>();
         this.listaStanze = new ArrayList<>();
+        this.nome = nome;
         this.tipo = tipo;
     }
 
-
+    /**
+     * Permette di specificare un'istanza placeholder
+     */
     public UnitaImmobiliare() {
         this.tipo = "";
     }
@@ -50,7 +57,7 @@ public class UnitaImmobiliare {
     }
 
     /**Permette di specificare lista/insieme di stanze in cui &egrave; articolata l'unit&agrave; immobiliare
-     * @param listaStanze lista di stanze da assegnare all'untita immobiliare
+     * @param listaStanze lista di stanze da assegnare all'unit&agrave; immobiliare
      */
     public void setListaStanze(ArrayList<Stanza> listaStanze) {
         this.listaStanze = listaStanze;
@@ -78,7 +85,7 @@ public class UnitaImmobiliare {
     }
 
     /**Permette di specificare il tipo/destinazione d'uso dell'unit&agrave; immobiliare
-     * @param tipo tipo/destinazione d'uso dell'unita immobiliare
+     * @param tipo tipo/destinazione d'uso dell'unit&agrave; immobiliare
      */
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -90,18 +97,18 @@ public class UnitaImmobiliare {
     public void aggiungiStanza(Stanza s) {
         for (Stanza stanza : listaStanze) {
             if (stanza.getNome().equals(s.getNome())) {
-                System.out.println("Stanza già presente");
+                System.out.println("Una stanza " + s.getNome() + " è già presente");
                 return;
             }
         }
         listaStanze.add(s);
-        System.out.println("Stanza aggiunta");
+        System.out.println("*** La stanza " + s.getNome() + " è stata correttamente aggiunta ***");
     }
 
     /**Permette di aggiungere artefatti, esterni a stanze, nell'unit&agrave; immobiliare
      * @param a nuovo artefatto da aggiungere
      */
-    public void aggiungiArtefatto(Artefatto a) { //questi Artefatti sono esterni alle stanze, ad esempio cancelli, lampade da esterni ecc..
+    public void aggiungiArtefatto(Artefatto a) {
         for (Artefatto artefatto : listaArtefatti) {
             if (artefatto.getNome().equals(a.getNome())) {
                 System.out.println("Artefatto già presente");
@@ -109,7 +116,7 @@ public class UnitaImmobiliare {
             }
         }
         listaArtefatti.add(a);
-        System.out.println("Artefatto aggiunto");
+        System.out.println("*** Artefatto creato correttamente ***");
 
     }
 
@@ -117,13 +124,13 @@ public class UnitaImmobiliare {
      * @return stringa descrittiva dell'intera unit&agrave; immobiliare
      */
     public String visualizzaDescrizione() {
-        String visualizza = "Tipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n";
+        String visualizza = "\n§ Tipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n";
 
         for (Stanza stanza : listaStanze) {
             visualizza += stanza.visualizzaDisposizione();
         }
 
-        visualizza += "\nArtefatti esterni all'unità immobiliare:\n";
+        visualizza += "\n\n§ Artefatti esterni all'unità immobiliare:\n";
         for(Stanza stanza : listaStanze) {
             for (Artefatto artefatto : listaArtefatti) {
                 if(!stanza.getListaArtefatti().contains(artefatto))
@@ -133,4 +140,10 @@ public class UnitaImmobiliare {
         return visualizza;
     }
 
+    /**Fornisce il nome dell'unit&agrave; immobiliare
+     * @return nome dell'unit&agrave; immobiliare
+     */
+    public String getNome() {
+        return nome;
+    }
 }

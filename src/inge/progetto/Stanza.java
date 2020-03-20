@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Ogni {@link UnitaImmobiliare} &egrave; costituita da almeno una {@link Stanza} o da almeno un {@link Artefatto}.
@@ -83,7 +84,7 @@ public class Stanza {
                 return;
         }
         listaSensori.add(sens);
-        System.out.println("Sensore aggiunto");
+        System.out.println("*** Sensore aggiunto ***");
 
     }
 
@@ -93,10 +94,11 @@ public class Stanza {
     public void aggiungiArtefatto(Artefatto a) {
         for (Artefatto artefatto : listaArtefatti) {
             if (artefatto.getNome().equals(a.getNome()))
+                System.out.println(" !! Artefatto già presente nella stanza !!");
                 return;
         }
         listaArtefatti.add(a);
-        System.out.println("Artefatto aggiunto");
+        System.out.println("*** Artefatto aggiunto correttamente alla stanza ***");
 
     }
 
@@ -104,16 +106,26 @@ public class Stanza {
      * @return stringa descrittiva della stanza
      */
     public String visualizzaDisposizione() {
-        String visualizza = "Nome Stanza: " + this.getNome() + ", essa possiede:\n";
+        StringBuilder visualizza = new StringBuilder("Nome Stanza: " + this.getNome() + ", essa possiede:\n\n");
+        if(!listaArtefatti.isEmpty()) {
+            for (Artefatto a : listaArtefatti) {
+                visualizza.append(a.visualizzaDispositivi());
+            }
+        } else
+            visualizza.append("!!! Al momento non sono stati attribuiti artefatti per questa stanza !!!\n");
 
-        for (Artefatto a: listaArtefatti) {
-            visualizza +=  a.visualizzaDispositivi();
-        }
+        visualizza.append("#").append(this.nome).append(" dispone inoltre dei seguenti sensori: ").append("\n");
+        if(!listaSensori.isEmpty()) {
+            for (Sensore s : listaSensori) {
+                visualizza.append("--Nome Sensore: ").append(s.getNome()).append(", ").append("categoria: ").append(s.getCategoria().getNome()).append(", ").append("rilevazioni: \n");
+                for (Informazione info : s.getRilevazioni()) {
+                    visualizza.append("$").append(info.toString());
+                }
+            }
+        } else
+            visualizza.append("!!! In questa stanza non sono presenti sensori !!!\n");
 
-        for (Sensore s : listaSensori) {
-            visualizza += "Nome Sensore: "+ s.getNome() + " | " + "Categoria: " + s.getCategoria().getNome() + " | " + "Rilevazione: " + s.getRilevazione().getValore()+"\n";
-        }
-        return visualizza;
+        return visualizza.toString();
 
     }
 }

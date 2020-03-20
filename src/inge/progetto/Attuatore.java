@@ -1,6 +1,7 @@
 package inge.progetto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Rappresenta un attuatore ovvero un dispositivo ,tramite il quale, il sistema domotivo compiere determinate azioni
@@ -39,6 +40,7 @@ public class Attuatore {
      * sono definite nella sua {@link #categoria}.
      */
     private String modalitaAttuale;
+
     /**
      * Lo stato(spento o acceso) dell'attuatore
      */
@@ -125,24 +127,56 @@ public class Attuatore {
             if(mod.getNome().equals(nuovaModalita)) {
                 this.modalitaAttuale = nuovaModalita;
 
-                modificaArtefatti(mod); //conseguente cambiamento di stato degli artefatti comandati
 
-                System.out.println("Nuova modalità");
+
+                modificaArtefatti(new ModalitaOperativa(nuovaModalita)); //conseguente cambiamento di stato degli artefatti comandati
+
+                System.out.println("*** Nuova modalità ***");
                 return;
             }
         }
         System.out.println("Questa modalità non esiste per questo attuatore");
     }
 
+    /** Specifica una nuova modalit&agrave; operativa per l'attuatore controllando prima
+     * che questa sia possibile(definita nel suo set di modalit&agrave; operative).
+     * Inoltre determina un cambiamento dello stato degli stati artefatti comandati
+     *
+     * @param nuovaModalita nome della nuova modalit&agrave; operativa
+     * @param nomeParametro nome del nuovo paramentro da settare
+     * @param valoreParametro setta il nuovo valore della modalità paramentrica inserita
+     */
+    public void setModalitaAttuale(String nuovaModalita, String nomeParametro, int valoreParametro) {
+        if (listaComandati.isEmpty()) {
+            System.out.println("XX L'attuatore non comanda alcun artefatto XX");
+            return;
+        }
+
+        if(this.modalitaAttuale.equals(nuovaModalita)) {
+            System.out.println("Sei già in questa modalità");
+        }
+        for (ModalitaOperativa mod : this.getCategoria().getModalita()) {
+            if(mod.getNome().equals(nuovaModalita)) {
+                this.modalitaAttuale = nuovaModalita;
+
+                HashMap<String, Integer> nuoviParam = (HashMap<String, Integer>) mod.getParametri().clone();
+                ModalitaOperativa nuovaMod = new ModalitaOperativa(nuovaModalita, nuoviParam);
+                nuovaMod.setParametro(nomeParametro, valoreParametro);
+
+                modificaArtefatti(nuovaMod);
+
+                System.out.println("*** Modalità modificata correttamente ***");
+                return;
+            }
+        }
+        System.out.println("Questa modalità non esiste per questo attuatore");
+    }
 
     /** Modifica la modalit&agrave; operatica/stato degli artefatti comandati dall'attuatore
      * @param mod nuova modalit&agrave; operativa da assegnare agli artefatti comandati dall'attuatore
      */
+
     private void modificaArtefatti(ModalitaOperativa mod) {
-        if (listaComandati.isEmpty()) {
-            System.out.println("** L'attuatore non comanda alcun artefatto **");
-            return;
-        }
 
         for (Artefatto art: listaComandati) {
             art.setStatoAttuale(mod);
