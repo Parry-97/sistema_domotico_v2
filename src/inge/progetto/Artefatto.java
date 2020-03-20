@@ -108,15 +108,10 @@ public class Artefatto {
      * @param s nuovo sensore da associare all'artefatto
      */
     public void aggiungiSensore(Sensore s) {
-        if (s.getCategoria().isFisico()) {
-            System.out.println("\n !!! Non è possibile collegare tale sensore all'artefatto scelto !!!");
-            return;
-        }
-
         if(!listaSensori.isEmpty()) {
             for (Sensore sensore : listaSensori) {
                 if (sensore.getNome().equals(s.getNome()) || sensore.getCategoria().getNome().equals(s.getCategoria().getNome())) {
-                    System.out.println("IMPOSSIBILE AGGINGERE SENSORE DELLA STESSA CATEGORIA !!!");
+                    System.out.println("!!! IMPOSSIBILE AGGINGERE SENSORE DELLA STESSA CATEGORIA !!!");
                     return;
                 }
             }
@@ -172,15 +167,14 @@ public class Artefatto {
                     sensStr.append(s.getRilevazioni().get(i).toString()).append("\n");
                 }
             }
-            sensStr.append("\n\n");
+            sensStr.append("\n");
         }
 
         if (sensStr.length() == 0)
-            visualizza.append("!!! Nessun sensore associato !!!");
+            visualizza.append("!!! Nessun sensore associato !!!\n");
         else
             visualizza.append(sensStr.toString());
 
-
-        return visualizza.toString();
+        return visualizza.append("\n").toString();
     }
 }

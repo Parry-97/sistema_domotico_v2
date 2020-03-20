@@ -25,6 +25,11 @@ public class Sensore {
     private boolean statoAttivazione;
 
     /**
+     * Flag che informa se il sensore è già associato ad un artefatto o meno
+     */
+    private boolean connesso;
+
+    /**
      * Costruttore della classe Sensore.
      * l'informazione inizialmente associata &egrave; di natura casuale(default)
      * @param nome nome da attribuire al sensore
@@ -37,6 +42,7 @@ public class Sensore {
         this.categoria = categoria;
         this.rilevazioni = categoria.getInfoRilevabili();
         this.statoAttivazione = true;
+        this.connesso = false;
     }
 
     /**Fornisce il nome del sensore
@@ -81,29 +87,19 @@ public class Sensore {
      * @see Informazione
      */
     public void setRilevazione(Informazione  rilevazione) {
+
         if(this.categoria.isFisico())
             System.out.println("Non è possibile alterare le rilevazioni del sensore! \n");
-        else
-            this.rilevazioni.set(0,rilevazione);
+        else {
+            this.rilevazioni.set(0, rilevazione);
+            connesso = true;
+        }
+
     }
 
     public void modificaRilevazione(Informazione info1, Informazione info2) {
         if (rilevazioni.contains(info1))
             rilevazioni.set(rilevazioni.indexOf(info1),info2);
-    }
-
-    /**Permette di conoscere lo stato di attivazione del sensore ovvero se &egrave; accesso o spento
-     * @return vero se il sensore &egrave; accesso/attivo falso altrimenti
-     */
-    public boolean isAttivo() {
-        return statoAttivazione;
-    }
-
-    /**Permette di impostare lo stato di attivazione del sensore
-     * @param statoAttivazione lo stato del sensore (acceso=True, spento=False)
-     */
-    public void setStatoAttivazione(boolean statoAttivazione) {
-        this.statoAttivazione = statoAttivazione;
     }
 
     /**
@@ -118,5 +114,12 @@ public class Sensore {
                 visualizza += info.getNome() + info.getValore();
         }
         return  visualizza;
+    }
+
+    /**Permette di sapere se il sensore è gia associato ad un artefatto
+     * @return True se il sensore è gia connesso ad un artefatto False altrimenti
+     */
+    public boolean isConnesso() {
+        return connesso;
     }
 }

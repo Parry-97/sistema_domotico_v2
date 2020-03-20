@@ -163,7 +163,7 @@ public class Attuatore {
                 ModalitaOperativa nuovaMod = new ModalitaOperativa(nuovaModalita, nuoviParam);
                 nuovaMod.setParametro(nomeParametro, valoreParametro);
 
-                modificaArtefatti(nuovaMod); //conseguente cambiamento di stato degli artefatti comandati
+                modificaArtefatti(nuovaMod);
 
                 System.out.println("*** Modalità modificata correttamente ***");
                 return;

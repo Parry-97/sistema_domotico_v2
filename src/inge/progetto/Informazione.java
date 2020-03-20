@@ -3,7 +3,7 @@ package inge.progetto;
 import java.io.Serializable;
 
 /**
- * Rappresenta l'informazione/misura che il sistema domotico acquisisce attaverso ogni singolo sensori dislocati
+ * Rappresenta l'informazione/misura numerica che il sistema domotico acquisisce attaverso ogni singolo sensori dislocati
  * nelle sottounit&agrave; immobiliari soggette al controllo. Ciascuna informazione &egrave; identificata da un {@link #nome}
  * e pu&ograve; assumere un valore che cade entro un dominio ({@link #VALORE_MIN} , {@link #VALORE_MAX}).
  *

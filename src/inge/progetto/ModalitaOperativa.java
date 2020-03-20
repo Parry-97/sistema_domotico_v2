@@ -8,6 +8,9 @@ import java.util.HashMap;
  * ad esso associato. Permettendo cosi ad un attuatore, attraverso una specifica modalit&agrave;, di comandare
  * il comportamento dell'artefatto, misurato o comunque monitorato eventualmente da un {@link Sensore}.
  *
+ * Una modalit&agrave; operativa pu&ograve; inoltre essere parametrica e quindi caratterizzata da dei {@link #parametri}: ad esempio un {@link Attuatore} destinato alla termoregolazione di un interno &egrave; eventulamente dotato di una modalit&agrave;
+ * operativa parametrica, dove un parametro &egrave; la temperatura desiderata impostata dal fruitore.
+ *
  * @author Parampal Singh, Mattia Nodari
  *
  * @see Informazione
@@ -15,38 +18,36 @@ import java.util.HashMap;
 public class ModalitaOperativa extends Informazione
                                 implements Serializable {
 
-    //Hashmap con nome e valore dei possibili parametri della modalità operativa
+
+    /**
+     * Insieme di parametri di una modalit&agrave; operativa.
+     * Ciascun parametro &egrave; dotato di nome, diverso da quello degli altri parametri della medesima modalit&agrave; e assume un valore numerico
+     */
     private HashMap<String, Integer> parametri;
 
     /**Costruttore della classe
-     * La modalit&agrave; operativa &egrave; completamente specificata dal manutentore
-     * con nome e valore prefissato
-     *
+     * La modalit&agrave; operativa &egrave; non parametrica completamente specificata dal manutentore con nome
      * @param nome nome della modalit&agrave; operativa
-     * //@param valore valore numerico della modalit&agrave; operativa
      */
     public ModalitaOperativa(String nome) {
-        super(nome); //Costruttore della classe padre (Informazione)
-        //this.valore = valore;
+        super(nome);
         this.parametri = new HashMap<>();
     }
 
 
+    /**Costruisce un istanza di modalit&agrave; operativa; in questo sar&agrave; una modalita operativa parametrica in quanto vengono definiti anche i
+     * @param nome nome della modalit&agrave; operativa
+     * @param parametri parametri da specificare nel caso la modalit&agrave; sia parametrica
+     */
     public ModalitaOperativa(String nome, HashMap<String, Integer> parametri) {
-        super(nome); //Costruttore della classe padre (Informazione)
-        //this.valore = valore;
+        super(nome);
         this.parametri = parametri;
     }
 
-    /**
-     * Ci permette di ricavare il valore informativo/numerico precedentemente assegnato dal manutentore alla
-     * modalit&agrave; operativa (guarda costruttore).
-     * Il metodo sovrascrive del omonimo metodo della classe padre(Informazione) dove il valore &egrave; generato casualmente
-     * ed &egrave; limitato da un range/dominio per la misura
-     *
-     * @see Informazione
+    /** Permette di modificare un parametro della modalità operativa
+     * @param nome nome del parametro che si desidera modificare
+     * @param valoreParam nuovo valore da assegnare al parametro
      */
-
     public void setParametro(String nome, int valoreParam) {
         if (parametri.isEmpty()) {
             System.out.println("!!! La modalità operativa non è parametrica !!! Riprova");
@@ -63,7 +64,7 @@ public class ModalitaOperativa extends Informazione
     }
 
     /**
-     *
+     * Fornisce una rappresentazione testuale che descrive brevemente l'istanza
      * @return stampa il toString della modalità operativa
      */
     @Override
@@ -79,7 +80,7 @@ public class ModalitaOperativa extends Informazione
     }
 
     /**
-     *
+     * Permette di conoscere se la modalità operativa è parametrica o meno
      * @return True se la modalità operativa è paramentrica oppure false se non lo è
      */
     public boolean isParametrica() {
@@ -87,12 +88,16 @@ public class ModalitaOperativa extends Informazione
     }
 
     /**
-     * Effettua il get dell'HashMap che contiene la lista dei parametri di quella modalità operativa
+     * Fornisce l'insieme dei parametri della modalità operativa
+     * @return parametri della modalità operativa
      */
     public HashMap<String, Integer> getParametri() {
         return parametri;
     }
 
+    /**Permette di specificare/modificare i parametri della modalità operativa
+     * @param parametri nuovi parametri da assegnare alla modalità operativa
+     */
     public void setParametri(HashMap<String, Integer> parametri) {
         this.parametri = parametri;
     }

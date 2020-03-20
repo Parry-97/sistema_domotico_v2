@@ -94,6 +94,7 @@ public class Stanza {
     public void aggiungiArtefatto(Artefatto a) {
         for (Artefatto artefatto : listaArtefatti) {
             if (artefatto.getNome().equals(a.getNome()))
+                System.out.println(" !! Artefatto già presente nella stanza !!");
                 return;
         }
         listaArtefatti.add(a);
@@ -113,11 +114,12 @@ public class Stanza {
         } else
             visualizza.append("!!! Al momento non sono stati attribuiti artefatti per questa stanza !!!\n");
 
+        visualizza.append("# La stanza dispone inoltre dei seguenti sensori: ").append("\n");
         if(!listaSensori.isEmpty()) {
             for (Sensore s : listaSensori) {
-                visualizza.append("Nome Sensore: ").append(s.getNome()).append(", ").append("categoria: ").append(s.getCategoria().getNome()).append(", ").append("rilevazioni: \n");
+                visualizza.append("--Nome Sensore: ").append(s.getNome()).append(", ").append("categoria: ").append(s.getCategoria().getNome()).append(", ").append("rilevazioni: \n");
                 for (Informazione info : s.getRilevazioni()) {
-                    visualizza.append("__ ").append(info.toString());
+                    visualizza.append("# ").append(info.toString());
                 }
             }
         } else

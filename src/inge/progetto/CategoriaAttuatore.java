@@ -59,11 +59,6 @@ public class CategoriaAttuatore implements Serializable {
         return testoLibero;
     }
 
-    /*public void setTestoLibero(String testoLibero) {
-        this.testoLibero = testoLibero;
-    }
-     */
-
     /**Fornisce l'insieme delle modalit&agrave; operative esibite da attuatori appartenenti alla categoria
      * @return lista di {@link #modalita} operative
      */

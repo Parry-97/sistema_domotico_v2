@@ -4,17 +4,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Rappresenta il dominio non numero delll'informazione/misura che il sistema domotico acquisisce attaverso ogni singolo sensore non numerico dislocato
- * nelle sottounit&agrave; immobiliari soggette al controllo. Ciascuna informazione &egrave; identificata da un nome
- * e pu&ograve;
+ * Un utente manutentore pu&ograve; descrivere inoltre ogni tipo di {@link CategoriaSensore}, cio&egrave; anche quelle per cui un {@link Sensore} pu&ograve; rilevare un'informazione anche non numerica.
+ * Ciascun tipo di informazione non numerica pu&ograve; assumere valori appartenenti a un dominio scalare finito (ogni singolo valore entro il dominio &egrave; una stringa). Ad esempio,
+ * l&rsquo;immagine prodotta da una videocamera di videosorveglianza &egrave; un&rsquo;informazione non numerica: si pu&ograve; convenire che i valori prodotti in uscita dalla stessa cadano nel dominio
+ * {presenza di persone, assenza di persone} a seconda che nell&rsquo;immagine sia riscontrabile la presenza o l&rsquo;assenza di persone. Invece il dominio dei valori di un&rsquo;immagine prodotta
+ * da una videocamera preposta al controllo di interni potrebbe essere {persona a terra, ok}, dove il primo valore denuncia un possibile incidente mentre il secondo lo esclude.
+ *
+ * @see Informazione
  *
  * @author Parampal Singh, Mattia Nodari
  */
 public class InformazioneNonNum extends Informazione
                                 implements Serializable {
+    /**
+     * Insieme di valori scalari(stringhe) che definiscono il dominio non numerico dell'informazione
+     */
     private ArrayList<String> dominioNonNumerico;
 
 
+    /**Costruttore di un'istanza di informazione non numerica
+     * @param nome nome dell'informazione
+     */
     public InformazioneNonNum(String nome) {
         super(nome);
         this.dominioNonNumerico = new ArrayList<>();
@@ -30,18 +40,9 @@ public class InformazioneNonNum extends Informazione
         this.dominioNonNumerico = dominioNonNumerico;
         super.setVALORE_MAX(dominioNonNumerico.size());
     }
-
-    public ArrayList<String> getDominioNonNumerico() {
-        return dominioNonNumerico;
-    }
-
-    public void setDominioNonNumerico(ArrayList<String> dominioNonNumerico) {
-        this.dominioNonNumerico = dominioNonNumerico;
-    }
-
     /**
-     *
-     * @return una rappresentazione testuale delle informazioni non numeriche che una categoria di sensori può acquisire
+     * Fornisce una rappresentazione testuale che descrive l'informazione
+     * @return una stringa descrittiva dell'istanza
      */
     @Override
     public String toString() {
