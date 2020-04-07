@@ -553,18 +553,14 @@ public class Main {
                                     }
 
                                     if (!unitaImmobiliare.getListaAttuatori().isEmpty()) {
-                                        System.out.println("...ATTUATORI ATTUALMENTE CREATI...");
-                                        for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
-                                            System.out.println("--- Nome attuatore: " + a.getNome());
-                                    if (!listaAttuatori.isEmpty()) {
                                         System.out.println("...ATTUATORI ATTUALMENTE CREATI E DISPONIBILI...");
                                         StringBuilder visualizzaAtt = new StringBuilder();
 
-                                        for (Attuatore a : listaAttuatori) {
-                                            if (arte.getListaAttuatori().contains(a))
+                                        for (Attuatore at : unitaImmobiliare.getListaAttuatori()) {
+                                            if (arte.getListaAttuatori().contains(at))
                                                 continue;
 
-                                            visualizzaAtt.append("--- Nome attuatore: ").append(a.getNome()).append("\n");
+                                            visualizzaAtt.append("--- Nome attuatore: ").append(at.getNome()).append("\n");
                                         }
 
                                         if (visualizzaAtt.length() > 0)
@@ -609,7 +605,6 @@ public class Main {
                                 }
                             }
 
-
                             if (!siArtefatto) {
                                 System.out.println("!!! L'artefatto non esiste tra quelli attualmente creati !!! ");
                                 break;
@@ -623,7 +618,6 @@ public class Main {
 
 
                             break;
-
                         case 11:
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("!!! Unità Immobiliare non creata. E' necessario definirla prima di questa operazione !!!");
