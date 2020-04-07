@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class ModalitaOperativa extends Informazione
                                 implements Serializable {
 
-    //Hashmap con nome e valore dei possibili parametri della modalità operativa
     private HashMap<String, Integer> parametri;
 
     /**Costruttore della classe
@@ -26,15 +25,13 @@ public class ModalitaOperativa extends Informazione
      * //@param valore valore numerico della modalit&agrave; operativa
      */
     public ModalitaOperativa(String nome) {
-        super(nome); //Costruttore della classe padre (Informazione)
-        //this.valore = valore;
+        super(nome);
         this.parametri = new HashMap<>();
     }
 
 
     public ModalitaOperativa(String nome, HashMap<String, Integer> parametri) {
-        super(nome); //Costruttore della classe padre (Informazione)
-        //this.valore = valore;
+        super(nome);
         this.parametri = parametri;
     }
 
