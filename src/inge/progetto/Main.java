@@ -720,7 +720,7 @@ public class Main {
 
                                         if (!se.getCategoria().isFisico() || s.getListaSensori().contains(se))
                                             continue;
-                                        visualizzaLS.append("--- Nome sensore: ").append(se.getNome());
+                                        visualizzaLS.append("--- Nome sensore: ").append(se.getNome()).append("\n");
                                     }
 
                                     if (visualizzaLS.length() > 0)
