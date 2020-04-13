@@ -191,20 +191,25 @@ public class UnitaImmobiliare {
      * @return stringa descrittiva dell'intera unit&agrave; immobiliare
      */
     public String visualizzaDescrizione() {
-        String visualizza = "\n§ Tipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n";
+        StringBuilder visualizza = new StringBuilder("\n§ Tipo unità immobiliare: " + this.getTipo() + ", è costituita dalle seguenti stanze:\n");
 
         for (Stanza stanza : listaStanze) {
-            visualizza += stanza.visualizzaDisposizione();
+            visualizza.append(stanza.visualizzaDisposizione());
         }
 
-        visualizza += "\n\n§ Artefatti esterni all'unità immobiliare:\n";
-        for(Stanza stanza : listaStanze) {
-            for (Artefatto artefatto : listaArtefatti) {
-                if(!stanza.getListaArtefatti().contains(artefatto))
-                    visualizza += artefatto.visualizzaDispositivi();
+        visualizza.append("\n\n§ Artefatti esterni all'unità immobiliare:\n");
+        for (Artefatto artefatto : listaArtefatti) {
+            boolean trovato = false;
+            for(Stanza stanza : listaStanze) {
+                if(stanza.getListaArtefatti().contains(artefatto)) {
+                    trovato = true;
+                    break;
+                }
             }
+            if(!trovato)
+                visualizza.append(artefatto.visualizzaDispositivi()).append("\n");
         }
-        return visualizza;
+        return visualizza.toString();
     }
 
     /**Fornisce il nome dell'unit&agrave; immobiliare
