@@ -766,7 +766,7 @@ public class Main {
                                     else
                                         System.out.println("XX Non sono presenti sensori disponibili per la stanza XX");
 
-                                    String sens = InputDati.leggiStringa("Inserisci il nome del sensore da aggiungere alla stanza " + s.getNome() + ": ");
+                                    String sens = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore da aggiungere alla stanza " + s.getNome() + ": ");
                                     for (Sensore sz : unitaImmobiliare.getListaSensori()) {
                                         if (sz.getNome().equals(sens)) {
                                             s.aggiungiSensore(sz);
@@ -806,7 +806,7 @@ public class Main {
                                 System.out.println("--- Nome sensore: " + s.getNome());
                             }
 
-                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
+                            String ss = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
                             for (Sensore sensore : unitaImmobiliare.getListaSensori()) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
@@ -839,7 +839,7 @@ public class Main {
                                 System.out.println("--- Nome attuatore: " + attr.getNome());
                             }
 
-                            String nomeAtt = InputDati.leggiStringa("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
+                            String nomeAtt = InputDati.leggiStringaNonVuota("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
                             for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
@@ -1089,7 +1089,7 @@ public class Main {
                                 System.out.println("--- Nome sensore: " + s.getNome());
                             }
 
-                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
+                            String ss = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
                             for (Sensore sensore : unitaImmobiliare.getListaSensori()) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
@@ -1122,7 +1122,7 @@ public class Main {
                                 System.out.println("--- Nome attuatore: " + attr.getNome());
                             }
 
-                            String nomeAtt = InputDati.leggiStringa("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
+                            String nomeAtt = InputDati.leggiStringaNonVuota("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
                             for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
