@@ -479,16 +479,14 @@ public class Main {
                             }
 
                             boolean presenzaSensore = false;
-                            String nomeSensore = InputDati.leggiStringa("\nInserisci il nome del sensore da aggiungere: ");
-                            for (Sensore sens : unitaImmobiliare.getListaSensori()) {
-                            String nomeSensore = InputDati.leggiStringaNonVuota("\nInserisci il nome del sensore da aggiungere: ");
 
+                            String nomeSensore = InputDati.leggiStringaNonVuota("\nInserisci il nome del sensore da aggiungere: ");
                             if (nomeSensore.contains(" ")) {
                                 System.out.println("!! Errore di inserimento nome, spazi non ammessi !!\n");
                                 break;
                             }
 
-                            for (Sensore sens : listaSensori) {
+                            for (Sensore sens : unitaImmobiliare.getListaSensori()) {
                                 if (sens.getNome().equals(nomeSensore + "_" + sens.getCategoria().getNome())) {
                                     System.out.println("!!! Esiste già un sensore con lo stesso nome. E' necessario avere nomi differenti !!!");
                                     presenzaSensore = true;
