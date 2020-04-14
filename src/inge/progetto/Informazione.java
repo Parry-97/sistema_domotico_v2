@@ -11,13 +11,18 @@ import java.io.Serializable;
  */
 public class Informazione implements Serializable {
 
+    /**
+     * nome dell'informazione
+     */
     private String nome;
 
 
-    /**rappresentano il range/dominio entro cui cade il valore dell'informazione; hanno già dei
-     * valori di default che possono poi essere modificati dal manutentore
+    /**estremo superiore del dominio di valori assunti dall'informazione
      */
     private int  VALORE_MAX = Integer.MAX_VALUE;
+
+    /**estremo superiore del dominio di valori assunti dall'informazione
+     */
     private int VALORE_MIN = 0;
 
 
@@ -33,7 +38,6 @@ public class Informazione implements Serializable {
      * @param valoreMax valore massimo del range/dominio dell'informazione
      * @param valoreMin valore minimo del range/dominio dell'informazione
      */
-
     public Informazione(String nome, int valoreMax, int valoreMin) {
         this.nome = nome;
         this.VALORE_MAX = valoreMax;
@@ -81,6 +85,7 @@ public class Informazione implements Serializable {
     public String getNome() {
         return nome;
     }
+
     /**Permette di modificare il nome con cui è specificata dell'informazione
      * @param nome  nuovo nome da assegnare all'informazione
      */

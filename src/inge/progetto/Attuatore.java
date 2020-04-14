@@ -46,6 +46,12 @@ public class Attuatore {
      */
     private boolean statoAttivazione;
 
+    /** Costruttore per istanza di Attuatore
+     * @param nome nome dell'attuatore
+     * @param categoria {@link CategoriaAttuatore} a cui appartiene
+     * @param modalitaAttuale nome della modalita operativa corrente
+     * @param singolo caratteristica di associazione
+     */
     public Attuatore(String nome, CategoriaAttuatore categoria, String modalitaAttuale, boolean singolo) {
         this.nome = nome + "_" + categoria.getNome();
         this.categoria = categoria;
@@ -175,7 +181,6 @@ public class Attuatore {
     /** Modifica la modalit&agrave; operatica/stato degli artefatti comandati dall'attuatore
      * @param mod nuova modalit&agrave; operativa da assegnare agli artefatti comandati dall'attuatore
      */
-
     private void modificaArtefatti(ModalitaOperativa mod) {
 
         for (Artefatto art: listaComandati) {
@@ -197,6 +202,9 @@ public class Attuatore {
         this.statoAttivazione = statoAttivazione;
     }
 
+    /**Permette di sapere se attuatore puo essere associato a uno o piu artefatti
+     * @return true se ha associazione singola, false altrimenti
+     */
     public boolean isSingolo() {
         return singolo;
     }

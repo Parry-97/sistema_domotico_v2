@@ -27,6 +27,9 @@ public class UnitaImmobiliare {
      */
     private String tipo;
 
+    /**
+     * nome dell'unita immobiliare
+     */
     private String nome;
 
     /**Costruttore per specifica di un oggetto UnitaImmboliare
