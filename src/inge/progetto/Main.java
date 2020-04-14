@@ -37,8 +37,8 @@ public class Main {
         ArrayList<CategoriaAttuatore> listaCategoriaAttuatori = new ArrayList<>();
         ArrayList<CategoriaSensore> listaCategoriaSensori = new ArrayList<>();
         ArrayList<ModalitaOperativa> listaModalitaOperative = new ArrayList<>();
-        ArrayList<Attuatore> listaAttuatori = new ArrayList<>();
-        ArrayList<Sensore> listaSensori = new ArrayList<>();
+        //ArrayList<Attuatore> listaAttuatori = new ArrayList<>();
+        //ArrayList<Sensore> listaSensori = new ArrayList<>();
 
         String operatore;
 
@@ -355,7 +355,7 @@ public class Main {
                             boolean erroreStato = true;
 
 
-                            for (Attuatore a : listaAttuatori) {
+                            for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
                                 if (a.getNome().equals(nuovoAttuatore + "_" + a.getCategoria().getNome())) {
                                     System.out.println("!!! Esiste già un attuatore con lo stesso nome. E' necessario avere nomi differenti !!! ");
                                     presenteAttuatore = true;
@@ -391,8 +391,7 @@ public class Main {
                                         for (ModalitaOperativa mod : listaModalitaOperative) {
                                             if (mod.getNome().equals(statoAttuale)) {
                                                 boolean singolo = InputDati.yesOrNo("Ha caratterstica di associazione singola: ");
-                                                listaAttuatori.add(new Attuatore(nuovoAttuatore, cat, statoAttuale, singolo));
-                                                System.out.println("*** L'attuatore è stato creato correttamente *** ");
+                                                unitaImmobiliare.aggiungiAttuatore(new Attuatore(nuovoAttuatore, cat, statoAttuale, singolo));
                                                 erroreStato = false;
                                                 break;
                                             }
@@ -480,6 +479,8 @@ public class Main {
                             }
 
                             boolean presenzaSensore = false;
+                            String nomeSensore = InputDati.leggiStringa("\nInserisci il nome del sensore da aggiungere: ");
+                            for (Sensore sens : unitaImmobiliare.getListaSensori()) {
                             String nomeSensore = InputDati.leggiStringaNonVuota("\nInserisci il nome del sensore da aggiungere: ");
 
                             if (nomeSensore.contains(" ")) {
@@ -504,7 +505,7 @@ public class Main {
                                 String nomeCategoria = InputDati.leggiStringaNonVuota("Inserisci il nome della categoria in cui rientra questo sensore: ");
                                 for (CategoriaSensore cateSens : listaCategoriaSensori) {
                                     if (cateSens.getNome().equals(nomeCategoria)) {
-                                        listaSensori.add(new Sensore(nomeSensore, cateSens));
+                                        unitaImmobiliare.aggiungiSensore(new Sensore(nomeSensore, cateSens));
                                         System.out.println("*** Sensore creato correttamente *** ");
                                         siCate = true;
                                         break;
@@ -526,7 +527,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaSensori.isEmpty() && listaAttuatori.isEmpty()) {
+                            if (unitaImmobiliare.getListaSensori().isEmpty() && unitaImmobiliare.getListaAttuatori().isEmpty()) {
                                 System.out.println("XXX Non sono stati definiti sensori e attuatori. Impossibile proseguire con l'operazione XXX");
                                 break;
                             }
@@ -547,10 +548,10 @@ public class Main {
                                     siArtefatto = true;
 
 
-                                    if (!listaSensori.isEmpty()) {
+                                    if (!unitaImmobiliare.getListaSensori().isEmpty()) {
                                         System.out.println("...SENSORI ATTUALMENTE CREATI E DISPONIBILI...");
                                         StringBuilder visualizzaSens = new StringBuilder();
-                                        for (Sensore s : listaSensori) {
+                                        for (Sensore s : unitaImmobiliare.getListaSensori()) {
                                             if (s.getCategoria().isFisico() || arte.getListaSensori().contains(s) || s.isConnesso())
                                                 continue;
                                             visualizzaSens.append("--- Nome sensore: ").append(s.getNome()).append("\n");
@@ -567,7 +568,7 @@ public class Main {
                                     String sensore = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore da aggiungere all'artefatto(N per non associare): ");
 
                                     if (!sensore.equals("N")) {
-                                        for (Sensore sensor : listaSensori) {
+                                        for (Sensore sensor : unitaImmobiliare.getListaSensori()) {
                                             if (sensor.getNome().equals(sensore)) {
                                                 if (sensor.isConnesso()) {
                                                     System.out.println("\n!!! Il sensore specificato è già stato associato ad un altro artefatto !!!");
@@ -591,15 +592,15 @@ public class Main {
                                         System.out.println("XX Non è stato aggiunto alcun sensore XX");
                                     }
 
-                                    if (!listaAttuatori.isEmpty()) {
+                                    if (!unitaImmobiliare.getListaAttuatori().isEmpty()) {
                                         System.out.println("...ATTUATORI ATTUALMENTE CREATI E DISPONIBILI...");
                                         StringBuilder visualizzaAtt = new StringBuilder();
 
-                                        for (Attuatore a : listaAttuatori) {
-                                            if (arte.getListaAttuatori().contains(a))
+                                        for (Attuatore at : unitaImmobiliare.getListaAttuatori()) {
+                                            if (arte.getListaAttuatori().contains(at))
                                                 continue;
 
-                                            visualizzaAtt.append("--- Nome attuatore: ").append(a.getNome()).append("\n");
+                                            visualizzaAtt.append("--- Nome attuatore: ").append(at.getNome()).append("\n");
                                         }
 
                                         if (visualizzaAtt.length() > 0)
@@ -612,7 +613,7 @@ public class Main {
                                     String attuatore = InputDati.leggiStringaNonVuota("Inserisci il nome dell' attuatore da aggiungere all'artefatto (N per non associare): ");
 
                                     if (!attuatore.equals("N")) {
-                                        for (Attuatore att : listaAttuatori) {
+                                        for (Attuatore att : unitaImmobiliare.getListaAttuatori()) {
                                             if (att.getNome().equals(attuatore)) {
                                                 siAttuatore = true;
                                                 if (att.isSingolo()) {
@@ -644,7 +645,6 @@ public class Main {
                                 }
                             }
 
-
                             if (!siArtefatto) {
                                 System.out.println("!!! L'artefatto non esiste tra quelli attualmente creati !!! ");
                                 break;
@@ -658,7 +658,6 @@ public class Main {
 
 
                             break;
-
                         case 11:
                             if (unitaImmobiliare.getTipo().equals("")) {
                                 System.out.println("!!! Unità Immobiliare non creata. E' necessario definirla prima di questa operazione !!!");
@@ -739,7 +738,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaSensori.isEmpty()) {
+                            if (unitaImmobiliare.getListaSensori().isEmpty()) {
                                 System.out.println("!!! Non sono presenti sensori da poter assegnare alla stanza !!!");
                                 break;
                             }
@@ -757,11 +756,11 @@ public class Main {
 
                                     System.out.println("...SENSORI ATTUALMENTE CREATI E DISPONIBILI...");
                                     StringBuilder visualizzaLS = new StringBuilder();
-                                    for (Sensore se : listaSensori) {
+                                    for (Sensore se : unitaImmobiliare.getListaSensori()) {
 
                                         if (!se.getCategoria().isFisico() || s.getListaSensori().contains(se))
                                             continue;
-                                        visualizzaLS.append("--- Nome sensore: ").append(se.getNome());
+                                        visualizzaLS.append("--- Nome sensore: ").append(se.getNome()).append("\n");
                                     }
 
                                     if (visualizzaLS.length() > 0)
@@ -769,8 +768,8 @@ public class Main {
                                     else
                                         System.out.println("XX Non sono presenti sensori disponibili per la stanza XX");
 
-                                    String sens = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore da aggiungere alla stanza " + s.getNome() + ": ");
-                                    for (Sensore sz : listaSensori) {
+                                    String sens = InputDati.leggiStringa("Inserisci il nome del sensore da aggiungere alla stanza " + s.getNome() + ": ");
+                                    for (Sensore sz : unitaImmobiliare.getListaSensori()) {
                                         if (sz.getNome().equals(sens)) {
                                             s.aggiungiSensore(sz);
                                             siSens = true;
@@ -796,7 +795,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaSensori.isEmpty()) {
+                            if (unitaImmobiliare.getListaSensori().isEmpty()) {
                                 System.out.println("XX Non sono presenti sensori da cui poter leggere rilevazioni XX");
                                 break;
                             }
@@ -805,12 +804,12 @@ public class Main {
 
                             System.out.println("\n...SENSORI ATTUALMENTE CREATI...");
 
-                            for (Sensore s : listaSensori) {
+                            for (Sensore s : unitaImmobiliare.getListaSensori()) {
                                 System.out.println("--- Nome sensore: " + s.getNome());
                             }
 
-                            String ss = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
-                            for (Sensore sensore : listaSensori) {
+                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
+                            for (Sensore sensore : unitaImmobiliare.getListaSensori()) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
                                     for (Informazione info : sensore.getRilevazioni()) {
@@ -829,7 +828,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaAttuatori.isEmpty()) {
+                            if (unitaImmobiliare.getListaAttuatori().isEmpty()) {
                                 System.out.println("!!! Non è presente alcun attuatore con cui poter agire !!!");
                                 break;
                             }
@@ -838,12 +837,12 @@ public class Main {
                             boolean siMod = false;
 
                             System.out.println("\n...ATTUATORI ATTUALMENTE CREATI...");
-                            for (Attuatore attr : listaAttuatori) {
+                            for (Attuatore attr : unitaImmobiliare.getListaAttuatori()) {
                                 System.out.println("--- Nome attuatore: " + attr.getNome());
                             }
 
-                            String nomeAtt = InputDati.leggiStringaNonVuota("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
-                            for (Attuatore a : listaAttuatori) {
+                            String nomeAtt = InputDati.leggiStringa("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
+                            for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
 
@@ -933,10 +932,10 @@ public class Main {
                                         break;
                                     case 4:
                                         System.out.println();
-                                        if (listaSensori.isEmpty())
+                                        if (unitaImmobiliare.getListaSensori().isEmpty())
                                             System.out.println("Lista sensori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
-                                            for (Sensore s : listaSensori) {
+                                            for (Sensore s : unitaImmobiliare.getListaSensori()) {
                                                 System.out.println("Nome Sensore: " + s.getNome());
                                             }
                                         }
@@ -950,10 +949,10 @@ public class Main {
                                         break;
                                     case 5:
                                         System.out.println();
-                                        if (listaAttuatori.isEmpty())
+                                        if (unitaImmobiliare.getListaAttuatori().isEmpty())
                                             System.out.println("Lista attuatori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
-                                            for (Attuatore att : listaAttuatori) {
+                                            for (Attuatore att : unitaImmobiliare.getListaAttuatori()) {
                                                 System.out.println("Nome Attuatore: " + att.getNome());
                                             }
                                         }
@@ -1079,7 +1078,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaSensori.isEmpty()) {
+                            if (unitaImmobiliare.getListaSensori().isEmpty()) {
                                 System.out.println("XX Non sono presenti sensori da cui poter leggere rilevazioni XX");
                                 break;
                             }
@@ -1088,12 +1087,12 @@ public class Main {
 
                             System.out.println("\n...SENSORI ATTUALMENTE CREATI DAL MANUTENTORE...");
 
-                            for (Sensore s : listaSensori) {
+                            for (Sensore s : unitaImmobiliare.getListaSensori()) {
                                 System.out.println("--- Nome sensore: " + s.getNome());
                             }
 
-                            String ss = InputDati.leggiStringaNonVuota("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
-                            for (Sensore sensore : listaSensori) {
+                            String ss = InputDati.leggiStringa("Inserisci il nome del sensore sul quale si vogliono leggere i dati: ");
+                            for (Sensore sensore : unitaImmobiliare.getListaSensori()) {
                                 if (sensore.getNome().equals(ss)) {
                                     siSen = true;
                                     for (Informazione info : sensore.getRilevazioni()) {
@@ -1112,7 +1111,7 @@ public class Main {
                                 break;
                             }
 
-                            if (listaAttuatori.isEmpty()) {
+                            if (unitaImmobiliare.getListaAttuatori().isEmpty()) {
                                 System.out.println("!!! Non è presente alcun attuatore con cui poter agire !!!");
                                 break;
                             }
@@ -1121,12 +1120,12 @@ public class Main {
                             boolean siMod = false;
 
                             System.out.println("\n...ATTUATORI ATTUALMENTE CREATI DAL MANUTENTORE...");
-                            for (Attuatore attr : listaAttuatori) {
+                            for (Attuatore attr : unitaImmobiliare.getListaAttuatori()) {
                                 System.out.println("--- Nome attuatore: " + attr.getNome());
                             }
 
-                            String nomeAtt = InputDati.leggiStringaNonVuota("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
-                            for (Attuatore a : listaAttuatori) {
+                            String nomeAtt = InputDati.leggiStringa("Inserisci il nome dell'attuatore al quale si vuole modificare la modalià operativa: ");
+                            for (Attuatore a : unitaImmobiliare.getListaAttuatori()) {
                                 if (a.getNome().equals(nomeAtt)) {
                                     siAttua = true;
 
@@ -1214,10 +1213,10 @@ public class Main {
                                         break;
                                     case 4:
                                         System.out.println();
-                                        if (listaSensori.isEmpty())
+                                        if (unitaImmobiliare.getListaSensori().isEmpty())
                                             System.out.println("Lista sensori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
-                                            for (Sensore s : listaSensori) {
+                                            for (Sensore s : unitaImmobiliare.getListaSensori()) {
                                                 System.out.println("Nome Sensore: " + s.getNome());
                                             }
                                         }
@@ -1231,10 +1230,10 @@ public class Main {
                                         break;
                                     case 5:
                                         System.out.println();
-                                        if (listaAttuatori.isEmpty())
+                                        if (unitaImmobiliare.getListaAttuatori().isEmpty())
                                             System.out.println("Lista attuatori attualmente vuota. E' necessario crearne di nuovi per utilizzare questa funzione");
                                         else {
-                                            for (Attuatore att : listaAttuatori) {
+                                            for (Attuatore att : unitaImmobiliare.getListaAttuatori()) {
                                                 System.out.println("Nome Attuatore: " + att.getNome());
                                             }
                                         }
